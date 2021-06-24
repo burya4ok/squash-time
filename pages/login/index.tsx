@@ -1,60 +1,28 @@
-import React from 'react';
-import Link from 'next/link'
+import { Auth, Typography, Button } from '@supabase/ui'
+import { createClient } from '@supabase/supabase-js'
 
-const Login = () => {
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
+const supabase = createClient('https://aaqdshxfbdenujajyefp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNDU3MjkxNCwiZXhwIjoxOTQwMTQ4OTE0fQ.G5vuustKQeeVJB4n31CAKbXTJ73ZBrb7DF9jRCLGKVM')
 
-        let email = e.target.elements.email?.value;
-        let password = e.target.elements.password?.value;
-
-        console.log(email, password);
-    };
+const Container = (props) => {
+  const { user } = Auth.useUser()
+  if (user)
     return (
-        <div className='h-screen flex bg-gray-bg1 flex-col items-center p-8'>
-            <div className='w-full max-w-md m-auto bg-white rounded-lg border border-primaryBorder shadow-default py-10 px-8'>
-                <h1 className='text-2xl font-medium text-primary mt-4 mb-12 text-center'>
-                    Log in to your account 🔐
-                </h1>
+      <>
+        <Typography.Text>Signed in: {user.email}</Typography.Text>
+        <Button block onClick={() => props.supabaseClient.auth.signOut()}>
+          Sign out
+        </Button>
+      </>
+    )
+  return props.children
+}
 
-                <form onSubmit={handleFormSubmit}>
-                    <div>
-                        <label htmlFor='email'>Email</label>
-                        <input
-                            type='email'
-                            className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
-                            id='email'
-                            placeholder='Your Email'
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor='password'>Password</label>
-                        <input
-                            type='password'
-                            className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
-                            id='password'
-                            placeholder='Your Password'
-                        />
-                    </div>
-
-                    <div className='flex justify-center items-center mt-6'>
-                        <button
-                            className={`bg-blue py-2 px-4 text-sm text-white rounded border border-blue focus:outline-none focus:border-blue-dark`}
-                        >
-                            Login
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <Link href="login/create">
-            <button
-                className={`py-2 px-4 text-sm text-blue rounded border border-blue focus:outline-none focus:border-blue-dark`}
-            >
-                Create account
-            </button>
-            </Link>
-        </div>
-    );
-};
-
-export default Login;
+export default function AuthBasic() {
+  return (
+    <Auth.UserContextProvider supabaseClient={supabase}>
+      <Container supabaseClient={supabase}>
+        <Auth supabaseClient={supabase} providers={['google', 'facebook']} socialColors />
+      </Container>
+    </Auth.UserContextProvider>
+  )
+}

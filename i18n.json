@@ -1,0 +1,7 @@
+{
+    "locales": ["ua", "ru", "en"],
+    "defaultLocale": "ua",
+    "pages": {
+      "/login": ["login"]
+    }
+  }

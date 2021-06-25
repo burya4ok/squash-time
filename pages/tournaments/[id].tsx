@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Layout, LayoutTheme } from '../../components/layout'
 import { faEdit, faPlus, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons'
-import { useTournamentInfo } from './data/useTournamentInfo'
+import { useTournamentInfo } from '../../utils/useTournamentInfo'
 import { useUser } from '../../hooks/useUser'
 import classNames from 'classnames'
 import { firestore } from '../../utils/firebase'

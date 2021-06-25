@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
-import { firestore } from '../../../utils/firebase'
+import { firestore } from './firebase'
 
 export const useTournamentInfo = (id: string | string[]) => {
   const [tournament, setTournament] = useState(null)

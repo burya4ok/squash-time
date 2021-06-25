@@ -7,9 +7,10 @@ import Head from 'next/head'
 import useTranslation from 'next-translate/useTranslation'
 
 import { useForm } from 'react-hook-form'
-import { auth } from '../../utils/firebase'
+import { auth, firestore } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
 import { ChangeLocale } from '../../components/common/ChangeLocale'
+import { checkUser } from '../../utils/user'
 
 type FormData = {
   email: string
@@ -40,6 +41,7 @@ export default function SignIn() {
     const provider = new auth.GoogleAuthProvider()
     auth()
       .signInWithPopup(provider)
+      .then(checkUser)
       .catch(() => setError(true))
   }
 
@@ -47,6 +49,7 @@ export default function SignIn() {
     const provider = new auth.FacebookAuthProvider()
     auth()
       .signInWithPopup(provider)
+      .then(checkUser)
       .catch(() => setError(true))
   }
 

@@ -27,11 +27,24 @@ const profile = [
   { label: 'signout', href: '/signout' },
 ]
 
-type LayoutProps = {
-  title?: string
+export enum LayoutTheme {
+  BLUE = 'indigo',
+  GREEN = 'green',
+  YELLOW = 'yellow',
 }
 
-export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, title }) => {
+type LayoutProps = {
+  title?: string
+  hideTitle?: boolean
+  theme?: LayoutTheme
+}
+
+export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
+  children,
+  title,
+  hideTitle,
+  theme = LayoutTheme.BLUE,
+}) => {
   const { t } = useTranslation('layout')
   const router = useRouter()
 
@@ -47,12 +60,17 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
         <title>{title}</title>
       </Head>
       <div className="min-h-screen bg-gray-100">
-        <div className="bg-indigo-600 pb-32">
-          <Disclosure as="nav" className="bg-indigo-600 border-b border-indigo-300 border-opacity-25 lg:border-none">
+        <div className={`bg-${theme}-600 pb-32`}>
+          <Disclosure
+            as="nav"
+            className={`bg-${theme}-600 border-b border-${theme}-300 border-opacity-25 lg:border-none`}
+          >
             {({ open }) => (
               <>
                 <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-                  <div className="relative h-16 flex items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
+                  <div
+                    className={`relative h-16 flex items-center justify-between lg:border-b lg:border-${theme}-400 lg:border-opacity-25`}
+                  >
                     <div className="px-2 flex items-center lg:px-0">
                       <div className="flex-shrink-0">
                         <Link href="main">
@@ -85,11 +103,13 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                           {navigation.map((item) => (
                             <Link href={item.href} key={item.label}>
                               {router.pathname === item.href ? (
-                                <a className="bg-indigo-700 text-white rounded-md py-2 px-3 text-sm font-medium">
+                                <a className={`bg-${theme}-700 text-white rounded-md py-2 px-3 text-sm font-medium`}>
                                   {t(item.label)}
                                 </a>
                               ) : (
-                                <a className="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium">
+                                <a
+                                  className={`text-white hover:bg-${theme}-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium`}
+                                >
                                   {t(item.label)}
                                 </a>
                               )}
@@ -100,7 +120,9 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                     </div>
                     <div className="flex lg:hidden">
                       {/* Mobile menu button */}
-                      <Disclosure.Button className="bg-indigo-600 p-2 rounded-md inline-flex items-center justify-center text-indigo-200 hover:text-white hover:bg-indigo-500 hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white">
+                      <Disclosure.Button
+                        className={`bg-${theme}-600 p-2 rounded-md inline-flex items-center justify-center text-${theme}-200 hover:text-white hover:bg-${theme}-500 hover:bg-opacity-75 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-${theme}-600 focus:ring-white`}
+                      >
                         <span className="sr-only">{t('open_main_menu')}</span>
                         {open ? (
                           <FontAwesomeIcon icon={faTimes} className="block h-6 w-6" aria-hidden="true" />
@@ -116,11 +138,13 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                           {({ open }) => (
                             <>
                               <div>
-                                <Menu.Button className="bg-indigo-600 rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-600 focus:ring-white">
+                                <Menu.Button
+                                  className={`bg-${theme}-600 rounded-full flex text-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-${theme}-600 focus:ring-white`}
+                                >
                                   <span className="sr-only">{t('open_user_menu')}</span>
 
-                                  {user?.photoURL ? (
-                                    <img className="rounded-full h-8 w-8" src={user?.photoURL} alt="" />
+                                  {user?.picture ? (
+                                    <img className="rounded-full h-8 w-8" src={user?.picture} alt="" />
                                   ) : (
                                     <div className="rounded-full bg-white h-8 w-8 justify-center items-center flex">
                                       <FontAwesomeIcon
@@ -144,7 +168,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                               >
                                 <Menu.Items
                                   static
-                                  className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                  className="z-30 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 >
                                   {profile.map((item) => (
                                     <Menu.Item key={item.label}>
@@ -183,22 +207,24 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                     {navigation.map((item) => (
                       <Link href={item.href} key={item.label}>
                         {router.pathname === item.href ? (
-                          <a className="bg-indigo-700 text-white block rounded-md py-2 px-3 text-base font-medium">
+                          <a className={`bg-${theme}-700 text-white block rounded-md py-2 px-3 text-base font-medium`}>
                             {t(item.label)}
                           </a>
                         ) : (
-                          <a className="text-white hover:bg-indigo-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium">
+                          <a
+                            className={`text-white hover:bg-${theme}-500 hover:bg-opacity-75 block rounded-md py-2 px-3 text-base font-medium`}
+                          >
                             {t(item.label)}
                           </a>
                         )}
                       </Link>
                     ))}
                   </div>
-                  <div className="pt-4 pb-3 border-t border-indigo-700">
+                  <div className={`pt-4 pb-3 border-t border-${theme}-700`}>
                     <div className="px-5 flex items-center">
                       <div className="flex-shrink-0">
-                        {user?.photoURL ? (
-                          <img className="rounded-full h-10 w-10" src={user?.photoURL} alt="" />
+                        {user?.picture ? (
+                          <img className="rounded-full h-10 w-10" src={user?.picture} alt="" />
                         ) : (
                           <div className="rounded-full bg-white h-10 w-10 justify-center items-center flex">
                             <FontAwesomeIcon icon={faUser} className="block h-6 w-6 text-gray-400" aria-hidden="true" />
@@ -207,7 +233,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                       </div>
                       <div className="ml-3">
                         <div className="text-base font-medium text-white">{user?.displayName}</div>
-                        <div className="text-sm font-medium text-indigo-300">{user?.email}</div>
+                        <div className={`text-sm font-medium text-${theme}-300`}>{user?.email}</div>
                       </div>
                     </div>
                     <div className="mt-3 px-2 space-y-1">
@@ -215,14 +241,16 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
                         item.href === '/signout' ? (
                           <button
                             key={item.label}
-                            className="block rounded-md py-2 px-3 text-base font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75"
+                            className={`block rounded-md py-2 px-3 text-base font-medium text-white hover:bg-${theme}-500 hover:bg-opacity-75`}
                             onClick={signOut}
                           >
                             {t(item.label)}
                           </button>
                         ) : (
                           <Link href={item.href} key={item.label}>
-                            <a className="block rounded-md py-2 px-3 text-base font-medium text-white hover:bg-indigo-500 hover:bg-opacity-75">
+                            <a
+                              className={`block rounded-md py-2 px-3 text-base font-medium text-white hover:bg-${theme}-500 hover:bg-opacity-75`}
+                            >
                               {t(item.label)}
                             </a>
                           </Link>
@@ -234,7 +262,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
               </>
             )}
           </Disclosure>
-          {!!title && (
+          {!!title && !hideTitle && (
             <header className="py-10">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 className="text-3xl font-bold text-white">{title}</h1>
@@ -243,7 +271,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({ children, tit
           )}
         </div>
 
-        <main className={classNames('-mt-32', { 'pt-8': !title })}>
+        <main className={classNames('-mt-32', { 'pt-8': !title || hideTitle })}>
           <div className="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8">
             <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 min-h-screen">{children}</div>
           </div>

@@ -8,7 +8,6 @@ export default function Settings() {
 
   return (
     <Layout title={t('title')}>
-      Settings content
       <ChangeLocale />
     </Layout>
   )

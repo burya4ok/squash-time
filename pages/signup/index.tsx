@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { auth } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
 import { ChangeLocale } from '../../components/common/ChangeLocale'
+import { checkUser } from '../../utils/user'
 
 type FormData = {
   email: string
@@ -34,6 +35,7 @@ export default function SignUp() {
   const onSubmit = handleSubmit(({ email, password }) => {
     auth()
       .createUserWithEmailAndPassword(email, password)
+      .then(checkUser)
       .catch(() => setError(true))
   })
 
@@ -41,6 +43,7 @@ export default function SignUp() {
     const provider = new auth.GoogleAuthProvider()
     auth()
       .signInWithPopup(provider)
+      .then(checkUser)
       .catch(() => setError(true))
   }
 
@@ -48,6 +51,7 @@ export default function SignUp() {
     const provider = new auth.FacebookAuthProvider()
     auth()
       .signInWithPopup(provider)
+      .then(checkUser)
       .catch(() => setError(true))
   }
 

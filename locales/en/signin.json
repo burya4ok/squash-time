@@ -1,0 +1,12 @@
+{
+    "title": "Sign In",
+    "header": "Sign in to your account",
+    "email": "E-mail",
+    "password": "Password",
+    "sign_in_button": "Sign In",
+    "sign_up_link": "Create account",
+    "continue_with": "Or continue with",
+    "login_facebook": "Sign in with Facebook",
+    "login_google": "Sign in with Google",
+    "login_error": "Account do not exist or password is wrong"
+}

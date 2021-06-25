@@ -1,0 +1,13 @@
+{
+    "title": "Создать аккаунт",
+    "header": "Создать аккаунт",
+    "email": "E-mail",
+    "password": "Пароль",
+    "sign_up_button": "Создать",
+    "sign_in_link": "Войти в аккаунт",
+    "continue_with": "Или продолжить через",
+    "login_facebook": "Создать через Facebook",
+    "login_google": "Создать через Google",
+    "login_error": "Аккаунт уже создан"
+
+}

@@ -1,0 +1,13 @@
+{
+    "title": "Створити аккаунт",
+    "header": "Створити аккаунт",
+    "email": "E-mail",
+    "password": "Пароль",
+    "sign_up_button": "Створити",
+    "sign_in_link": "Увійти в аккаунт",
+    "continue_with": "Або продовжити через",
+    "login_facebook": "Створити через Facebook",
+    "login_google": "Створити через Google",
+    "login_error": "Аккаунт вже створенний"
+
+}

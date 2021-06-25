@@ -1,0 +1,12 @@
+{
+    "title": "Sign Up",
+    "header": "Sign up to your account",
+    "email": "E-mail",
+    "password": "Password",
+    "sign_up_button": "Sign Up",
+    "sign_in_link": "Sign in to your account",
+    "continue_with": "Or continue with",
+    "login_facebook": "Sign up with Facebook",
+    "login_google": "Sign up with Google",
+    "login_error": "Account is already exist"
+}

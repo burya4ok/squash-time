@@ -1,0 +1,12 @@
+{
+    "title": "Вход",
+    "header": "Войти в свой аккаунт",
+    "email": "E-mail",
+    "password": "Пароль",
+    "sign_in_button": "Войти",
+    "sign_up_link": "Создать аккаунт",
+    "continue_with": "Или продолжить через",
+    "login_facebook": "Войти через Facebook",
+    "login_google": "Войти через Google",
+    "login_error": "Аккаунта не существует или пароль не правильный"
+}

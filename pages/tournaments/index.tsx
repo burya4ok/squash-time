@@ -6,19 +6,39 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 import { Layout, LayoutTheme } from '../../components/layout'
 import { format } from 'date-fns'
-import { faCalendar, faMapPin, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCalendar, faMapPin, faPlus, faUser } from '@fortawesome/free-solid-svg-icons'
 import { firestore } from '../../utils/firebase'
+import { useUser } from '../../hooks/useUser'
 
 export default function Tournaments() {
   const { t } = useTranslation('tournaments')
+
+  const { user } = useUser()
 
   const [value, loading, error] = useCollectionData(firestore().collection('tournaments'), {
     snapshotListenOptions: { includeMetadataChanges: true },
     idField: 'id',
   })
 
+  const createButton = () => {
+    if (!user?.isAdmin) {
+      return null
+    }
+    return (
+      <Link href="/tournaments/new">
+        <button
+          type="button"
+          className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-green-500 bg-white hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500"
+        >
+          <FontAwesomeIcon icon={faPlus} className="-ml-0.5 mr-2 h-4 w-4" />
+          {t('create')}
+        </button>
+      </Link>
+    )
+  }
+
   return (
-    <Layout title={t('title')} theme={LayoutTheme.GREEN}>
+    <Layout title={t('title')} RightContent={createButton} theme={LayoutTheme.GREEN}>
       {loading || error ? (
         <div>Loading...</div>
       ) : (

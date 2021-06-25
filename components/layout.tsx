@@ -37,6 +37,7 @@ type LayoutProps = {
   title?: string
   hideTitle?: boolean
   theme?: LayoutTheme
+  RightContent?: React.FC<any>
 }
 
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
@@ -44,6 +45,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   title,
   hideTitle,
   theme = LayoutTheme.BLUE,
+  RightContent,
 }) => {
   const { t } = useTranslation('layout')
   const router = useRouter()
@@ -73,7 +75,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
                   >
                     <div className="px-2 flex items-center lg:px-0">
                       <div className="flex-shrink-0">
-                        <Link href="main">
+                        <Link href="/main">
                           <svg
                             className="mx-auto h-12 w-auto"
                             width="269"
@@ -264,8 +266,9 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
           </Disclosure>
           {!!title && !hideTitle && (
             <header className="py-10">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-row justify-between">
                 <h1 className="text-3xl font-bold text-white">{title}</h1>
+                {RightContent && <RightContent />}
               </div>
             </header>
           )}

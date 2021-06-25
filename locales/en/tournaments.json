@@ -1,4 +1,7 @@
 {
     "title": "Tournaments",
-    "join": "Join"
+    "join": "Join",
+    "leave": "Leave",
+    "edit": "Edit",
+    "create": "Create"
 }

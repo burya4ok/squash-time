@@ -59,6 +59,7 @@ export default function Tournament() {
                     className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                   >
                     <FontAwesomeIcon icon={faEdit} className="h-4 w-4" />
+                    <span className="hidden md:block ml-2">{t('edit')}</span>
                   </button>
                 )}
                 {isParticipant ? (
@@ -68,6 +69,7 @@ export default function Tournament() {
                     className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="h-4 w-4" />
+                    <span className="hidden md:block ml-2">{t('leave')}</span>
                   </button>
                 ) : (
                   <button
@@ -76,6 +78,7 @@ export default function Tournament() {
                     className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   >
                     <FontAwesomeIcon icon={faPlus} className="h-4 w-4" />
+                    <span className="hidden md:block ml-2">{t('join')}</span>
                   </button>
                 )}
               </div>

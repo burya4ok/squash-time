@@ -27,7 +27,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push('/')
+      router.push('/main')
     }
   }, [loading, user])
 

@@ -2,8 +2,12 @@
     "locales": ["ua", "ru", "en"],
     "defaultLocale": "ua",
     "pages": {
-      "*": ["change-locale"],
+      "*": ["change-locale", "layout"],
       "/signin": ["signin"],
-      "/signup": ["signup"]
+      "/signup": ["signup"],
+      "/main": ["main"],
+      "/tournaments": ["tournaments"],
+      "/settings": ["settings"],
+      "/profile": ["profile"]
     }
   }

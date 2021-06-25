@@ -9,6 +9,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { useForm } from 'react-hook-form'
 import { auth } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
+import { ChangeLocale } from '../../components/common/ChangeLocale'
 
 type FormData = {
   email: string
@@ -164,6 +165,8 @@ export default function SignIn() {
                 </div>
               </div>
             </div>
+            <ChangeLocale />
+
           </div>
         </div>
       </div>

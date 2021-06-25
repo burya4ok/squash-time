@@ -2,6 +2,7 @@
     "locales": ["ua", "ru", "en"],
     "defaultLocale": "ua",
     "pages": {
+      "*": ["change-locale"],
       "/signin": ["signin"],
       "/signup": ["signup"]
     }

@@ -166,7 +166,6 @@ export default function SignIn() {
               </div>
             </div>
             <ChangeLocale />
-
           </div>
         </div>
       </div>

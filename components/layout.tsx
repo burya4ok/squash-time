@@ -274,9 +274,9 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
           )}
         </div>
 
-        <main className={classNames('-mt-32', { 'pt-8': !title || hideTitle })}>
-          <div className="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 min-h-screen">{children}</div>
+        <main className={classNames('-mt-32 min-h-full', { 'pt-8': !title || hideTitle })}>
+          <div className="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8 min-h-full">
+            <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 min-h-full">{children}</div>
           </div>
         </main>
       </div>

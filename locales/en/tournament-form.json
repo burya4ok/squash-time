@@ -1,0 +1,21 @@
+{
+    "title_create": "Create new tournament",
+    "title_edit": "Edit tournament",
+    "tournament_info": "Tournament information",
+    "name": "Tournament's name",
+    "description": "Tournament's description",
+    "description_details": "Write a few sentences about a tournament",
+    "place": "Tournament's name",
+    "date": "Tournament's date",
+    "time": "Tournament's time",
+    "participants_amount_max": "Participant's max amount",
+    "price": "Price",
+    "currency": "UAH",
+    "create": "Create",
+    "edit": " Edit",
+    "delete": "Delete",
+    "deletion_title": "Delete the tournament?",
+    "deletion_description": "Are you sure you want to delete the tournament? All of the data will be permanently removed from our servers forever. This action cannot be undone.",
+    "deletion_button_confirm": "Delete",
+    "deletion_button_cancel": "Cancel"
+}

@@ -8,7 +8,8 @@
       "/main": ["main"],
       "/tournaments": ["tournaments"],
       "/tournaments/[id]": ["tournaments"],
-      "/tournaments/new": ["tournaments-new"],
+      "/tournaments/new": ["tournament-form"],
+      "/tournaments/[id]/edit": ["tournament-form"],
       "/settings": ["settings"],
       "/profile": ["profile"]
     }

@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren } from 'react'
+import { Fragment, PropsWithChildren, useMemo } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons'
@@ -9,6 +9,7 @@ import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import colors from 'tailwindcss/colors'
 
 const navigation = [
   {
@@ -31,6 +32,12 @@ export enum LayoutTheme {
   BLUE = 'indigo',
   GREEN = 'green',
   YELLOW = 'yellow',
+}
+
+const ThemeColors = {
+  [LayoutTheme.BLUE]: 'rgb(79, 70, 229)',
+  [LayoutTheme.GREEN]: 'rgb(5, 150, 105)',
+  [LayoutTheme.YELLOW]: 'rgb(217, 119, 6)',
 }
 
 type LayoutProps = {
@@ -56,10 +63,17 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
     router.push('/signin')
     auth().signOut()
   }
+
+  const themeColor = useMemo(() => {
+    return ThemeColors[theme]
+  }, [theme])
+
   return (
     <>
       <Head>
         <title>{title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="theme-color" content={themeColor} />
       </Head>
       <div className="min-h-screen bg-gray-100">
         <div className={`bg-${theme}-600 pb-32`}>

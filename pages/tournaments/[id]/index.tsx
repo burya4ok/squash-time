@@ -3,19 +3,19 @@ import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { Layout, LayoutTheme } from '../../components/layout'
+import { Layout, LayoutTheme } from '../../../components/layout'
 import { faEdit, faPlus, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons'
-import { useTournamentInfo } from '../../utils/useTournamentInfo'
-import { useUser } from '../../hooks/useUser'
+import { useTournamentInfo } from '../../../hooks/useTournamentInfo'
+import { useUser } from '../../../hooks/useUser'
 import classNames from 'classnames'
-import { firestore } from '../../utils/firebase'
+import { firestore } from '../../../utils/firebase'
 
 export default function Tournament() {
-  const { query } = useRouter()
+  const router = useRouter()
   const { t } = useTranslation('tournaments')
   const { user } = useUser()
 
-  const [tournament, loading, error] = useTournamentInfo(query.id)
+  const [tournament, loading, error] = useTournamentInfo(router.query.id)
 
   const isParticipant = useMemo(() => {
     if (!user || !tournament) {
@@ -27,15 +27,19 @@ export default function Tournament() {
 
   const onParticipate = () => {
     firestore()
-      .doc(`tournaments/${query.id}`)
+      .doc(`tournaments/${router.query.id}`)
       .update({
         participants: firestore.FieldValue.arrayUnion(user.ref),
       })
   }
 
+  const onEdit = () => {
+    router.push(`/tournaments/${router.query.id}/edit`)
+  }
+
   const onLeaveTournament = () => {
     firestore()
-      .doc(`tournaments/${query.id}`)
+      .doc(`tournaments/${router.query.id}`)
       .update({
         participants: firestore.FieldValue.arrayRemove(user.ref),
       })
@@ -55,6 +59,7 @@ export default function Tournament() {
               <div className="ml-4 mt-2 flex-shrink-0">
                 {user.isAdmin && (
                   <button
+                    onClick={onEdit}
                     type="button"
                     className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
                   >

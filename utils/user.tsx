@@ -10,14 +10,23 @@ export const UserContext = React.createContext({
   signOut: () => undefined,
 })
 
+export const LOGIN_ROUTES = ['/signin', '/signup', '/']
+
 export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [authUser, authLoading] = useAuthState(auth())
   const router = useRouter()
 
   useEffect(() => {
+    if (!loading && !user && !authUser && !LOGIN_ROUTES.includes(router.pathname)) {
+      router.push('/signin')
+    }
+  }, [loading, user])
+
+  useEffect(() => {
     if (authUser && !authLoading) {
+      setLoading(true)
       const docRef = firestore().collection('users').doc(authUser?.uid)
 
       docRef.get().then((doc) => {
@@ -30,11 +39,11 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
             id: docRef.id,
             ref: docRef,
           })
-          setLoading(false)
         }
+        setLoading(false)
       })
     }
-  }, [authUser, loading])
+  }, [authUser, authLoading])
 
   const addNewUserToFirestore = (user: any) => {
     const collection = firestore().collection('users')
@@ -51,6 +60,7 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
   }
 
   const checkOrCreateUser = (user: any) => {
+    setLoading(true)
     //after we have the credential - lets check if the user exists in firestore
     const docRef = firestore().collection('users').doc(authUser?.uid)
 
@@ -72,9 +82,14 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
   }
 
   const signOut = () => {
+    setLoading(true)
     setUser(null)
     router.push('/signin')
-    auth().signOut()
+    auth()
+      .signOut()
+      .then(() => {
+        setLoading(false)
+      })
   }
 
   return <UserContext.Provider value={{ user, loading, checkOrCreateUser, signOut }}>{children}</UserContext.Provider>

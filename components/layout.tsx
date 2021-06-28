@@ -9,7 +9,6 @@ import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import colors from 'tailwindcss/colors'
 
 const navigation = [
   {
@@ -57,12 +56,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   const { t } = useTranslation('layout')
   const router = useRouter()
 
-  const { user } = useUser()
-
-  const signOut = () => {
-    router.push('/signin')
-    auth().signOut()
-  }
+  const { user, signOut } = useUser()
 
   const themeColor = useMemo(() => {
     return ThemeColors[theme]

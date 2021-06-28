@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons'
 import { useRouter } from 'next/router'
@@ -7,10 +7,10 @@ import Head from 'next/head'
 import useTranslation from 'next-translate/useTranslation'
 
 import { useForm } from 'react-hook-form'
-import { auth, firestore } from '../../utils/firebase'
+import { auth } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
 import { ChangeLocale } from '../../components/common/ChangeLocale'
-import { checkUser } from '../../utils/user'
+import { UserContext } from '../../utils/user'
 
 type FormData = {
   email: string
@@ -22,6 +22,7 @@ export default function SignIn() {
   const [error, setError] = useState(false)
   const router = useRouter()
   const { t } = useTranslation('signin')
+  const { checkOrCreateUser } = useContext(UserContext)
 
   const { user, loading } = useUser()
 
@@ -41,7 +42,7 @@ export default function SignIn() {
     const provider = new auth.GoogleAuthProvider()
     auth()
       .signInWithPopup(provider)
-      .then(checkUser)
+      .then(checkOrCreateUser)
       .catch(() => setError(true))
   }
 
@@ -49,7 +50,7 @@ export default function SignIn() {
     const provider = new auth.FacebookAuthProvider()
     auth()
       .signInWithPopup(provider)
-      .then(checkUser)
+      .then(checkOrCreateUser)
       .catch(() => setError(true))
   }
 

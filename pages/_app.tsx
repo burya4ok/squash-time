@@ -1,9 +1,10 @@
 import { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import 'tailwindcss/tailwind.css'
 import { useUser } from '../hooks/useUser'
+import { UserProvider } from '../utils/user'
 
 const LOGIN_ROUTES = ['/signin', '/signup', '/']
 
@@ -21,5 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
     return <div>Loading...</div>
   }
 
-  return <Component {...pageProps} />
+  return (
+    <UserProvider>
+      <Component {...pageProps} />
+    </UserProvider>
+  )
 }

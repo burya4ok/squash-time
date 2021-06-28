@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons'
 import { useRouter } from 'next/router'
@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form'
 import { auth } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
 import { ChangeLocale } from '../../components/common/ChangeLocale'
-import { checkUser } from '../../utils/user'
+import { UserContext } from '../../utils/user'
 
 type FormData = {
   email: string
@@ -20,6 +20,7 @@ type FormData = {
 export default function SignUp() {
   const { register, handleSubmit } = useForm<FormData>()
   const [error, setError] = useState(false)
+  const { checkOrCreateUser } = useContext(UserContext)
 
   const router = useRouter()
   const { t } = useTranslation('signup')
@@ -35,7 +36,7 @@ export default function SignUp() {
   const onSubmit = handleSubmit(({ email, password }) => {
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(checkUser)
+      .then(checkOrCreateUser)
       .catch(() => setError(true))
   })
 
@@ -43,7 +44,7 @@ export default function SignUp() {
     const provider = new auth.GoogleAuthProvider()
     auth()
       .signInWithPopup(provider)
-      .then(checkUser)
+      .then(checkOrCreateUser)
       .catch(() => setError(true))
   }
 
@@ -51,7 +52,7 @@ export default function SignUp() {
     const provider = new auth.FacebookAuthProvider()
     auth()
       .signInWithPopup(provider)
-      .then(checkUser)
+      .then(checkOrCreateUser)
       .catch(() => setError(true))
   }
 

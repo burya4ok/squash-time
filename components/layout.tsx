@@ -135,9 +135,9 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
                       >
                         <span className="sr-only">{t('open_main_menu')}</span>
                         {open ? (
-                          <FontAwesomeIcon icon={faTimes} className="block h-6 w-6" aria-hidden="true" />
+                          <FontAwesomeIcon icon={faTimes} className="block h-6 w-6 text-white" aria-hidden="true" />
                         ) : (
-                          <FontAwesomeIcon icon={faBars} className="block h-6 w-6" aria-hidden="true" />
+                          <FontAwesomeIcon icon={faBars} className="block h-6 w-6 text-white" aria-hidden="true" />
                         )}
                       </Disclosure.Button>
                     </div>

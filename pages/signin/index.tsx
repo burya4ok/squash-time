@@ -27,7 +27,6 @@ export default function SignIn() {
   const { user, loading } = useUser()
 
   useEffect(() => {
-    console.log(user)
     if (!loading && user) {
       router.push('/main')
     }

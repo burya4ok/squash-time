@@ -29,7 +29,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push('/main')
+      router.push('/tournaments')
     }
   }, [loading, user])
 

@@ -11,10 +11,10 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 const navigation = [
-  {
-    label: 'main',
-    href: '/main',
-  },
+  // {
+  //   label: 'main',
+  //   href: '/main',
+  // },
   {
     label: 'tournaments',
     href: '/tournaments',

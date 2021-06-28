@@ -22,26 +22,36 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
     if (!loading && !user && !authUser && !LOGIN_ROUTES.includes(router.pathname)) {
       router.push('/signin')
     }
-  }, [loading, user])
+  }, [loading, user, authUser])
+
+  useEffect(() => {
+    if (!authLoading && !authUser && !user) {
+      setLoading(false)
+    }
+  }, [authUser, user, authLoading])
 
   useEffect(() => {
     if (authUser && !authLoading) {
       setLoading(true)
       const docRef = firestore().collection('users').doc(authUser?.uid)
 
-      docRef.get().then((doc) => {
-        if (doc.exists) {
-          const data = doc.data()
-          setUser({
-            ...data,
-            isAdmin: data.role === 'admin',
-            isReferee: data.role === 'referee',
-            id: docRef.id,
-            ref: docRef,
-          })
-        }
-        setLoading(false)
-      })
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            const data = doc.data()
+            setUser({
+              ...data,
+              isAdmin: data.role === 'admin',
+              isReferee: data.role === 'referee',
+              id: docRef.id,
+              ref: docRef,
+            })
+          }
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     }
   }, [authUser, authLoading])
 

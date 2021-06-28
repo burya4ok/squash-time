@@ -33,7 +33,7 @@ export default function EditTournament() {
 
   useEffect(() => {
     if (tournament && !loading && !error) {
-      const date = format(new Date(tournament.date.toDate()), 'yyyy-dd-MM')
+      const date = format(new Date(tournament.date.toDate()), 'yyyy-MM-dd')
       const time = format(new Date(tournament.date.toDate()), 'hh:mm')
       reset({ ...tournament, date, time })
     }

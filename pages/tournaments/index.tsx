@@ -6,7 +6,15 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 import { Layout, LayoutTheme } from '../../components/layout'
 import { format } from 'date-fns'
-import { faCalendar, faMapPin, faPlus, faUser } from '@fortawesome/free-solid-svg-icons'
+import {
+  faCalendar,
+  faClock,
+  faLocationArrow,
+  faMapPin,
+  faMoneyBill,
+  faPlus,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons'
 import { firestore } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
 
@@ -28,10 +36,12 @@ export default function Tournaments() {
       <Link href="/tournaments/new">
         <button
           type="button"
-          className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-green-500 bg-white hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500"
+          className="inline-flex items-baseline px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-green-500 bg-white hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500"
         >
-          <FontAwesomeIcon icon={faPlus} className="-ml-0.5 mr-2 h-4 w-4" />
-          {t('create')}
+          <span className="-ml-0.5 mr-2 h-4 w-4">
+            <FontAwesomeIcon icon={faPlus} />
+          </span>
+          <span className="text-sm">{t('create')}</span>
         </button>
       </Link>
     )
@@ -49,7 +59,7 @@ export default function Tournaments() {
               className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
             >
               <div>
-                <h3 className="text-xl font-medium mb-2">
+                <h3 className="text-xl font-medium mb-2 mr-7">
                   <Link href={`tournaments/${tournament.id}`}>
                     <a className="focus:outline-none">
                       <span className="absolute inset-0" aria-hidden="true" />
@@ -57,21 +67,44 @@ export default function Tournaments() {
                     </a>
                   </Link>
                 </h3>
-                <div className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faUser} className="h-5 w-5 text-green-500" aria-hidden="true" />
-                  <span className="text-green-700 text-sm font-medium">
-                    {tournament.participants.length} / {tournament.participants_amount_max}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faCalendar} className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  <span className="text-gray-900 text-sm font-medium">
-                    {format(new Date(tournament.date.toDate()), 'hh:mm dd-MM-yyyy')}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faMapPin} className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  <span className="text-gray-900 text-sm font-medium">{tournament.place}</span>
+                <h2 className="text-gray-500 mb-2 mr-7">{tournament.description}</h2>
+                <div className="grid grid-cols-2">
+                  <div className="flex items-baseline space-x-2">
+                    <span className="h-5 w-5">
+                      <FontAwesomeIcon icon={faUser} className="text-green-500" aria-hidden="true" />
+                    </span>
+                    <span className="text-green-700 text-sm font-medium">
+                      {tournament.participants.length} / {tournament.participants_amount_max}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="h-5 w-5">
+                      <FontAwesomeIcon icon={faMoneyBill} className="text-yellow-400" aria-hidden="true" />
+                    </span>
+                    <span className="text-yellow-600 text-sm font-medium">{tournament.price}</span>
+                  </div>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="h-5 w-5">
+                      <FontAwesomeIcon icon={faClock} className="text-gray-400" aria-hidden="true" />
+                    </span>
+                    <span className="text-gray-900 text-sm font-medium">
+                      {format(new Date(tournament.date.toDate()), 'hh:mm')}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="h-5 w-5">
+                      <FontAwesomeIcon icon={faCalendar} className="text-gray-400" aria-hidden="true" />
+                    </span>
+                    <span className="text-gray-900 text-sm font-medium">
+                      {format(new Date(tournament.date.toDate()), 'dd-MM-yyyy')}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="h-5 w-5">
+                      <FontAwesomeIcon icon={faLocationArrow} className="text-gray-400" aria-hidden="true" />
+                    </span>
+                    <span className="text-gray-900 text-sm font-medium">{tournament.place}</span>
+                  </div>
                 </div>
               </div>
               <span

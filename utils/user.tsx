@@ -17,7 +17,6 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
   const router = useRouter()
 
   useEffect(() => {
-    console.log(authUser)
     if (authUser && !authLoading) {
       const docRef = firestore().collection('users').doc(authUser?.uid)
 
@@ -52,7 +51,6 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
   }
 
   const checkOrCreateUser = (user: any) => {
-    console.log(user)
     //after we have the credential - lets check if the user exists in firestore
     const docRef = firestore().collection('users').doc(authUser?.uid)
 
@@ -68,7 +66,6 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
         }
       })
       .then((u) => {
-        console.log(u)
         setUser(u)
         setLoading(false)
       })

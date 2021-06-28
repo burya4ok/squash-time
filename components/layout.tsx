@@ -3,7 +3,6 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons'
 import classNames from 'classnames'
-import { auth } from '../utils/firebase'
 import { useUser } from '../hooks/useUser'
 import Link from 'next/link'
 import useTranslation from 'next-translate/useTranslation'
@@ -83,7 +82,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
                   >
                     <div className="px-2 flex items-center lg:px-0">
                       <div className="flex-shrink-0">
-                        <Link href="/main">
+                        <Link href="/tournaments">
                           <svg
                             className="mx-auto h-12 w-auto"
                             width="269"

@@ -3,6 +3,7 @@
     "defaultLocale": "ua",
     "pages": {
       "*": ["change-locale", "layout"],
+      "/": ["change-locale", "landing"],
       "/signin": ["signin"],
       "/signup": ["signup"],
       "/main": ["main"],

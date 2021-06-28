@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import useTranslation from 'next-translate/useTranslation'
+import { BaseURI } from '../constants/config'
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -144,7 +145,7 @@ const footerNavigation = {
 export default function Example() {
   const { t } = useTranslation('landing')
   const router = useRouter()
-  console.log(router)
+
 
   return (
     <>
@@ -155,12 +156,12 @@ export default function Example() {
         <meta name="description" content={t('description')} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={location.host} />
+        <meta property="og:url" content={BaseURI} />
         <meta property="og:title" content={t('title')} />
         <meta property="og:description" content={t('description')} />
 
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={location.host} />
+        <meta property="twitter:url" content={BaseURI} />
         <meta property="twitter:title" content={t('title')} />
         <meta property="twitter:description" content={t('description')} />
 

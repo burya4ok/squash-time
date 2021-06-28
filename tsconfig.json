@@ -22,7 +22,8 @@
     "components/**/*.tsx",
     "utils/**/*.ts",
     "utils/**/*.tsx",
-    "hooks/**/*.ts"
+    "hooks/**/*.ts",
+    "constants/**/*.ts"
   ],
   "exclude": ["node_modules", "./tailwind.config.js", "./next.config.js", "./postcss.config.js"]
 }

@@ -81,7 +81,7 @@ export default function Tournaments() {
                     <span className="h-5 w-5">
                       <FontAwesomeIcon icon={faMoneyBill} className="text-yellow-400" aria-hidden="true" />
                     </span>
-                    <span className="text-yellow-600 text-sm font-medium">{tournament.price}</span>
+                    <span className="text-yellow-600 text-sm font-medium">{tournament.price}₴</span>
                   </div>
                   <div className="flex items-baseline space-x-2">
                     <span className="h-5 w-5">

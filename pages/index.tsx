@@ -146,7 +146,6 @@ export default function Example() {
   const { t } = useTranslation('landing')
   const router = useRouter()
 
-
   return (
     <>
       <Head>
@@ -159,11 +158,13 @@ export default function Example() {
         <meta property="og:url" content={BaseURI} />
         <meta property="og:title" content={t('title')} />
         <meta property="og:description" content={t('description')} />
+        <meta property="og:image" content={`${BaseURI}squash-time-logo.png`}>
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={BaseURI} />
         <meta property="twitter:title" content={t('title')} />
         <meta property="twitter:description" content={t('description')} />
+        <meta property="twitter:image" content={`${BaseURI}squash-time-logo.png`}>
 
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="theme-color" content="rgb(249, 250, 251)" />

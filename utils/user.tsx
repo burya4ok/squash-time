@@ -86,7 +86,7 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
         }
       })
       .then((u) => {
-        setUser(u)
+        setUser({ ...u, id: docRef.id, ref: docRef })
         setLoading(false)
       })
   }

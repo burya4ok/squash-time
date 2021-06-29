@@ -106,7 +106,7 @@ export default function Tournament() {
       ) : (
         <div>
           <div className="bg-white px-4 py-5 border-gray-200 sm:px-6">
-            <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
+            <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap flex-nowrap">
               <div className="ml-4 mt-2">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">{tournament?.name}</h3>
               </div>
@@ -168,7 +168,7 @@ export default function Tournament() {
                   onClick={() => setParticipantsOpen(!participantsOpen)}
                 >
                   {!participantsOpen ? (
-                    <div className="flex -space-x-2 relative z-0 overflow-hidden">
+                    <div className="flex -space-x-2 relative z-0 overflow-hidden h-10 p-1">
                       {participantsWithIcons.map((participant) =>
                         participant?.picture ? (
                           <img
@@ -202,7 +202,7 @@ export default function Tournament() {
                       )}
                     </div>
                   ) : (
-                    <div className="flex flex-col space-y-2 ">
+                    <div className="flex flex-col space-y-2 p-1">
                       {participantsFiltered.map((participant) => (
                         <div className="inline-flex items-center">
                           {participant?.picture ? (

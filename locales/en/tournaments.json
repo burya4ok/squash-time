@@ -3,5 +3,10 @@
     "join": "Join",
     "leave": "Leave",
     "edit": "Edit",
-    "create": "Create"
+    "create": "Create",
+    "participants": "Participants",
+    "price": "Price",
+    "time": "Time",
+    "date": "Date",
+    "place": "Place"
 }

@@ -40,6 +40,7 @@ const ThemeColors = {
 
 type LayoutProps = {
   title?: string
+  description?: string
   hideTitle?: boolean
   theme?: LayoutTheme
   RightContent?: React.FC<any>
@@ -48,6 +49,7 @@ type LayoutProps = {
 export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   children,
   title,
+  description,
   hideTitle,
   theme = LayoutTheme.BLUE,
   RightContent,
@@ -65,6 +67,18 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
     <>
       <Head>
         <title>{title}</title>
+
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="theme-color" content={themeColor} />
       </Head>

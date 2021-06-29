@@ -150,7 +150,7 @@ export default function Example() {
     <>
       <Head>
         <title>{t('title')}</title>
-        <title>{t('title')}</title>
+
         <meta name="title" content={t('title')} />
         <meta name="description" content={t('description')} />
 

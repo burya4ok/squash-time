@@ -36,7 +36,7 @@ export default function Tournaments() {
       <Link href="/tournaments/new">
         <button
           type="button"
-          className="inline-flex items-baseline px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-green-500 bg-white hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500"
+          className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-green-500 bg-white hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white-500"
         >
           <span className="-ml-0.5 mr-2 h-4 w-4">
             <FontAwesomeIcon icon={faPlus} />
@@ -85,25 +85,25 @@ export default function Tournaments() {
                   </div>
                   <div className="flex items-baseline space-x-2">
                     <span className="h-5 w-5">
-                      <FontAwesomeIcon icon={faClock} className="text-gray-400" aria-hidden="true" />
+                      <FontAwesomeIcon icon={faClock} className="text-indigo-400" aria-hidden="true" />
                     </span>
-                    <span className="text-gray-900 text-sm font-medium">
+                    <span className="text-indigo-600 text-sm font-medium">
                       {format(new Date(tournament.date.toDate()), 'hh:mm')}
                     </span>
                   </div>
                   <div className="flex items-baseline space-x-2">
                     <span className="h-5 w-5">
-                      <FontAwesomeIcon icon={faCalendar} className="text-gray-400" aria-hidden="true" />
+                      <FontAwesomeIcon icon={faCalendar} className="text-indigo-400" aria-hidden="true" />
                     </span>
-                    <span className="text-gray-900 text-sm font-medium">
+                    <span className="text-indigo-600 text-sm font-medium">
                       {format(new Date(tournament.date.toDate()), 'dd-MM-yyyy')}
                     </span>
                   </div>
                   <div className="flex items-baseline space-x-2">
                     <span className="h-5 w-5">
-                      <FontAwesomeIcon icon={faLocationArrow} className="text-gray-400" aria-hidden="true" />
+                      <FontAwesomeIcon icon={faLocationArrow} className="text-purple-400" aria-hidden="true" />
                     </span>
-                    <span className="text-gray-900 text-sm font-medium">{tournament.place}</span>
+                    <span className="text-purple-600 text-sm font-medium">{tournament.place}</span>
                   </div>
                 </div>
               </div>

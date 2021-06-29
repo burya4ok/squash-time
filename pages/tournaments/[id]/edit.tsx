@@ -39,13 +39,12 @@ export default function EditTournament() {
     }
   }, [tournament, loading, error])
 
-  const onSubmit = handleSubmit(({ date, time, ...values }) => {
+  const onSubmit = handleSubmit(({ date, time, participants, ...values }) => {
     firestore()
       .doc(`tournaments/${router.query.id}`)
       .update({
         ...values,
         date: firestore.Timestamp.fromDate(combineDateAndTime(date, time)),
-        participants: [],
       })
       .then(() => {
         router.push(`/tournaments/${router.query.id}`)

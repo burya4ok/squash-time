@@ -34,7 +34,9 @@ module.exports = {
   darkMode: false,
   theme: {},
   variants: {
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+    },
   },
   plugins: [require('@tailwindcss/forms')],
 }

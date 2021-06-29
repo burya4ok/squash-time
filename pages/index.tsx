@@ -1,81 +1,44 @@
-/* This example requires Tailwind CSS v2.0+ */
 import React, { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { faBars, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChangeLocale } from '../components/common/ChangeLocale'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import useTranslation from 'next-translate/useTranslation'
 import { BaseURI } from '../constants/config'
 
 const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
+  { name: 'link_tournaments', href: '/tournaments' },
+  { name: 'link_about', href: '/about' },
 ]
 
 const features = [
   {
-    name: 'Invite team members',
-    description: 'Tempor tellus in aliquet eu et sit nulla tellus. Suspendisse est, molestie blandit quis ac. Lacus.',
+    name: 'features_1_title',
+    description: 'features_1_description',
   },
   {
-    name: 'Notifications',
-    description: 'Ornare donec rhoncus vitae nisl velit, neque, mauris dictum duis. Nibh urna non parturient.',
+    name: 'features_2_title',
+    description: 'features_2_description',
   },
   {
-    name: 'List view',
-    description: 'Etiam cras augue ornare pretium sit malesuada morbi orci, venenatis. Dictum lacus.',
+    name: 'features_3_title',
+    description: 'features_3_description',
   },
   {
-    name: 'Boards',
-    description: 'Interdum quam pulvinar turpis tortor, egestas quis diam amet, natoque. Mauris sagittis.',
-  },
-  {
-    name: 'Keyboard shortcuts',
-    description: 'Ullamcorper in ipsum ac feugiat. Senectus at aliquam vulputate mollis nec. In at risus odio.',
-  },
-  {
-    name: 'Reporting',
-    description: 'Magna a vel sagittis aliquam eu amet. Et lorem auctor quam nunc odio. Sed bibendum.',
-  },
-  {
-    name: 'Calendars',
-    description: 'Sed mi, dapibus turpis orci posuere integer. A porta viverra posuere adipiscing turpis.',
-  },
-  {
-    name: 'Mobile app',
-    description: 'Quisque sapien nunc nisl eros. Facilisis sagittis maecenas id dignissim tristique proin sed.',
+    name: 'features_4_title',
+    description: 'features_4_description',
   },
 ]
 
 const footerNavigation = {
-  solutions: [
-    { name: 'Marketing', href: '#' },
-    { name: 'Analytics', href: '#' },
-    { name: 'Commerce', href: '#' },
-    { name: 'Insights', href: '#' },
-  ],
-  support: [
-    { name: 'Pricing', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
-    { name: 'API Status', href: '#' },
-  ],
-  company: [
-    { name: 'About', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Jobs', href: '#' },
-    { name: 'Press', href: '#' },
-    { name: 'Partners', href: '#' },
-  ],
+  tournaments: [{ name: 'footer_tournaments_tournaments', href: '/tournaments' }],
+  user: [{ name: 'footer_user_signin', href: '/signin' }],
+  company: [{ name: 'footer_company_about', href: '/about' }],
   legal: [
-    { name: 'Claim', href: '#' },
-    { name: 'Privacy', href: '#' },
-    { name: 'Terms', href: '#' },
+    { name: 'footer_legal_privacy', href: '/privacy' },
+    { name: 'footer_legal_terms', href: '/terms' },
   ],
   social: [
     {
@@ -113,38 +76,11 @@ const footerNavigation = {
         </svg>
       ),
     },
-    {
-      name: 'GitHub',
-      href: '#',
-      icon: (props) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path
-            fillRule="evenodd"
-            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: 'Dribbble',
-      href: '#',
-      icon: (props) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path
-            fillRule="evenodd"
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c5.51 0 10-4.48 10-10S17.51 2 12 2zm6.605 4.61a8.502 8.502 0 011.93 5.314c-.281-.054-3.101-.629-5.943-.271-.065-.141-.12-.293-.184-.445a25.416 25.416 0 00-.564-1.236c3.145-1.28 4.577-3.124 4.761-3.362zM12 3.475c2.17 0 4.154.813 5.662 2.148-.152.216-1.443 1.941-4.48 3.08-1.399-2.57-2.95-4.675-3.189-5A8.687 8.687 0 0112 3.475zm-3.633.803a53.896 53.896 0 013.167 4.935c-3.992 1.063-7.517 1.04-7.896 1.04a8.581 8.581 0 014.729-5.975zM3.453 12.01v-.26c.37.01 4.512.065 8.775-1.215.25.477.477.965.694 1.453-.109.033-.228.065-.336.098-4.404 1.42-6.747 5.303-6.942 5.629a8.522 8.522 0 01-2.19-5.705zM12 20.547a8.482 8.482 0 01-5.239-1.8c.152-.315 1.888-3.656 6.703-5.337.022-.01.033-.01.054-.022a35.318 35.318 0 011.823 6.475 8.4 8.4 0 01-3.341.684zm4.761-1.465c-.086-.52-.542-3.015-1.659-6.084 2.679-.423 5.022.271 5.314.369a8.468 8.468 0 01-3.655 5.715z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
   ],
 }
 
 export default function Example() {
   const { t } = useTranslation('landing')
-  const router = useRouter()
 
   return (
     <>
@@ -229,7 +165,7 @@ export default function Example() {
                     <div className="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0">
                       <div className="flex items-center justify-between w-full md:w-auto">
                         <a href="#">
-                          <span className="sr-only">Squa</span>
+                          <span className="sr-only">Squash Time</span>
                           <svg
                             className="mx-auto h-12 w-auto"
                             width="269"
@@ -264,7 +200,7 @@ export default function Example() {
                     <div className="hidden md:flex md:space-x-10">
                       {navigation.map((item) => (
                         <a key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
-                          {item.name}
+                          {t(item.name)}
                         </a>
                       ))}
                     </div>
@@ -272,7 +208,7 @@ export default function Example() {
                       <span className="inline-flex rounded-md shadow">
                         <Link href="/signin">
                           <a className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50">
-                            Log in
+                            {t('button_signin')}
                           </a>
                         </Link>
                       </span>
@@ -330,18 +266,16 @@ export default function Example() {
                       </div>
                       <div className="px-2 pt-2 pb-3">
                         {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </a>
+                          <Link key={item.name} href={item.href}>
+                            <a className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                              {t(item.name)}
+                            </a>
+                          </Link>
                         ))}
                       </div>
                       <Link href="/signin">
                         <a className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100">
-                          Log in
+                          {t('button_signin')}
                         </a>
                       </Link>
                     </div>
@@ -354,29 +288,26 @@ export default function Example() {
           <main className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24">
             <div className="text-center">
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                <span className="block xl:inline">Data to enrich your</span>{' '}
-                <span className="block text-indigo-600 xl:inline">online business</span>
+                <span className="block xl:inline">{t('header_title_1')}</span>{' '}
+                <span className="block text-indigo-600 xl:inline">{t('header_title_2')}</span>
               </h1>
               <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
-                fugiat veniam occaecat fugiat aliqua.
+                {t('header_description')}
               </p>
               <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
                 <div className="rounded-md shadow">
-                  <a
-                    href="#"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
-                  >
-                    Get started
-                  </a>
+                  <Link href="/tournaments">
+                    <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                      {t('header_button_1')}
+                    </a>
+                  </Link>
                 </div>
                 <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                  <a
-                    href="#"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
-                  >
-                    Live demo
-                  </a>
+                  <Link href="/signin">
+                    <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+                      {t('header_button_2')}
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -385,53 +316,52 @@ export default function Example() {
         <div className="bg-white relative">
           <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:py-24 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-extrabold text-gray-900">All-in-one platform</h2>
-              <p className="mt-4 text-lg text-gray-500">
-                Ac euismod vel sit maecenas id pellentesque eu sed consectetur. Malesuada adipiscing sagittis vel nulla
-                nec.
-              </p>
+              <h2 className="text-3xl font-extrabold text-gray-900">{t('features_title')}</h2>
+              <p className="mt-4 text-lg text-gray-500">{t('features_description')}</p>
             </div>
             <dl className="mt-12 space-y-10 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4 lg:gap-x-8">
               {features.map((feature) => (
                 <div key={feature.name} className="relative">
                   <dt>
                     <FontAwesomeIcon icon={faCheck} className="absolute h-6 w-6 text-green-500" aria-hidden="true" />
-                    <p className="ml-9 text-lg leading-6 font-medium text-gray-900">{feature.name}</p>
+                    <p className="ml-9 text-lg leading-6 font-medium text-gray-900">{t(feature.name)}</p>
                   </dt>
-                  <dd className="mt-2 ml-9 text-base text-gray-500">{feature.description}</dd>
+                  <dd className="mt-2 ml-9 text-base text-gray-500">{t(feature.description)}</dd>
                 </div>
               ))}
             </dl>
           </div>
         </div>
-        <footer className="bg-white" aria-labelledby="footerHeading">
+        <footer className="bg-white relative" aria-labelledby="footerHeading">
           <h2 id="footerHeading" className="sr-only">
             Footer
           </h2>
-          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:pb-16 lg:px-8">
             <div className="pb-8 xl:grid xl:grid-cols-5 xl:gap-8">
               <div className="grid grid-cols-2 gap-8 xl:col-span-4">
-                <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div className="md:grid md:grid-cols-2 md:gap-8 ">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
+                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                      {t('footer_tournaments')}
+                    </h3>
                     <ul className="mt-4 space-y-4">
-                      {footerNavigation.solutions.map((item) => (
+                      {footerNavigation.tournaments.map((item) => (
                         <li key={item.name}>
-                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
-                            {item.name}
-                          </a>
+                          <Link href={item.href}>
+                            <a className="text-base text-gray-500 hover:text-gray-900">{t(item.name)}</a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div className="mt-12 md:mt-0">
-                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{t('footer_user')}</h3>
                     <ul className="mt-4 space-y-4">
-                      {footerNavigation.support.map((item) => (
+                      {footerNavigation.user.map((item) => (
                         <li key={item.name}>
-                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
-                            {item.name}
-                          </a>
+                          <Link href={item.href}>
+                            <a className="text-base text-gray-500 hover:text-gray-900">{t(item.name)}</a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -439,25 +369,29 @@ export default function Example() {
                 </div>
                 <div className="md:grid md:grid-cols-2 md:gap-8">
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                      {t('footer_company')}
+                    </h3>
                     <ul className="mt-4 space-y-4">
                       {footerNavigation.company.map((item) => (
                         <li key={item.name}>
-                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
-                            {item.name}
-                          </a>
+                          <Link href={item.href}>
+                            <a className="text-base text-gray-500 hover:text-gray-900">{t(item.name)}</a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div className="mt-12 md:mt-0">
-                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
+                    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                      {t('footer_legal')}
+                    </h3>
                     <ul className="mt-4 space-y-4">
                       {footerNavigation.legal.map((item) => (
                         <li key={item.name}>
-                          <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
-                            {item.name}
-                          </a>
+                          <Link href={item.href}>
+                            <a className="text-base text-gray-500 hover:text-gray-900">{t(item.name)}</a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -465,7 +399,7 @@ export default function Example() {
                 </div>
               </div>
               <div className="mt-12 xl:mt-0">
-                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Language</h3>
+                <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{t('footer_language')}</h3>
                 <form className="mt-4 sm:max-w-xs">
                   <ChangeLocale hideLabel align="left" />
                 </form>
@@ -474,15 +408,13 @@ export default function Example() {
             <div className="border-t border-gray-200 pt-8 lg:flex lg:items-center lg:justify-between xl:mt-0">
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                  Subscribe to our newsletter
+                  {t('footer_subscribe_header')}
                 </h3>
-                <p className="mt-2 text-base text-gray-500">
-                  The latest news, articles, and resources, sent to your inbox weekly.
-                </p>
+                <p className="mt-2 text-base text-gray-500">{t('footer_subscribe_description')}</p>
               </div>
               <form className="mt-4 sm:flex sm:max-w-md lg:mt-0">
                 <label htmlFor="emailAddress" className="sr-only">
-                  Email address
+                  {t('footer_subscribe_header_placeholder')}
                 </label>
                 <input
                   type="email"
@@ -491,14 +423,14 @@ export default function Example() {
                   autoComplete="email"
                   required
                   className="appearance-none min-w-0 w-full bg-white border border-gray-300 py-2 px-4 text-base rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400 sm:max-w-xs"
-                  placeholder="Enter your email"
+                  placeholder={t('footer_subscribe_header_placeholder')}
                 />
                 <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
                   <button
                     type="submit"
                     className="w-full bg-indigo-600 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    Subscribe
+                    {t('footer_subscribe_header_button')}
                   </button>
                 </div>
               </form>
@@ -512,9 +444,7 @@ export default function Example() {
                   </a>
                 ))}
               </div>
-              <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
-                &copy; 2020 Workflow, Inc. All rights reserved.
-              </p>
+              <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">{t('footer_all_rights')}</p>
             </div>
           </div>
         </footer>

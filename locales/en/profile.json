@@ -1,3 +1,8 @@
 {
-    "title": "Your profile"
+    "title": "Your profile",
+    "info": "Information",
+    "displayName": "Full Name",
+    "email": "E-mail",
+    "phone": "Phone",
+    "update": "Update"
 }

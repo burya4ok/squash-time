@@ -1,11 +1,9 @@
 import useTranslation from 'next-translate/useTranslation'
-import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Layout } from '../../components/layout'
 import { useUser } from '../../hooks/useUser'
-import { firestore } from '../../utils/firebase'
 
 type FormData = {
   displayName: string
@@ -15,8 +13,7 @@ type FormData = {
 }
 
 export default function Profile() {
-  const router = useRouter()
-  const { user, loading } = useUser()
+  const { user, loading, update } = useUser()
 
   const { register, handleSubmit, reset } = useForm<FormData>()
 
@@ -32,7 +29,7 @@ export default function Profile() {
   }, [user, loading])
 
   const onSubmit = handleSubmit((values) => {
-    firestore().doc(`users/${user?.id}`).update(values)
+    update(values)
   })
 
   const { t } = useTranslation('profile')
@@ -67,7 +64,7 @@ export default function Profile() {
                           {...register('displayName')}
                         />
                       </div>
-                      <div className="col-span-6">
+                      {/* <div className="col-span-6">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                           {t('email')}
                         </label>
@@ -79,7 +76,7 @@ export default function Profile() {
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('email')}
                         />
-                      </div>
+                      </div> */}
                       <div className="col-span-6">
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                           {t('phone')}
@@ -95,7 +92,6 @@ export default function Profile() {
                             className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300"
                             placeholder="000-000-00-00"
                             {...register('phone')}
-
                           />
                         </div>
                       </div>

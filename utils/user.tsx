@@ -8,6 +8,7 @@ export const UserContext = React.createContext({
   loading: false,
   checkOrCreateUser: (user: any) => null,
   signOut: () => undefined,
+  update: (user: any) => undefined,
 })
 
 export const LOGIN_ROUTES = ['/signin', '/signup', '/']
@@ -102,5 +103,14 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
       })
   }
 
-  return <UserContext.Provider value={{ user, loading, checkOrCreateUser, signOut }}>{children}</UserContext.Provider>
+  const update = (details) => {
+    const docRef = firestore().doc(`users/${user?.id}`)
+    docRef.update(details).then(() => setUser({ ...details, id: docRef.id, ref: docRef }))
+  }
+
+  return (
+    <UserContext.Provider value={{ user, loading, checkOrCreateUser, signOut, update }}>
+      {children}
+    </UserContext.Provider>
+  )
 }

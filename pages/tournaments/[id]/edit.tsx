@@ -20,6 +20,7 @@ type FormData = {
   price: number
   date: string
   time: string
+  participants: string[]
 }
 
 export default function EditTournament() {
@@ -131,32 +132,6 @@ export default function EditTournament() {
                         />
                       </div>
                       <div className="col-span-6 sm:col-span-3">
-                        <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                          {t('date')}
-                        </label>
-                        <input
-                          type="date"
-                          name="date"
-                          id="date"
-                          required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                          {...register('date')}
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                          {t('time')}
-                        </label>
-                        <input
-                          type="time"
-                          name="time"
-                          id="time"
-                          required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                          {...register('time')}
-                        />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
                         <label htmlFor="participants_amount_max" className="block text-sm font-medium text-gray-700">
                           {t('participants_amount_max')}
                         </label>
@@ -193,6 +168,32 @@ export default function EditTournament() {
                             </span>
                           </div>
                         </div>
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <label htmlFor="time" className="block text-sm font-medium text-gray-700">
+                          {t('time')}
+                        </label>
+                        <input
+                          type="time"
+                          name="time"
+                          id="time"
+                          required
+                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          {...register('time')}
+                        />
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                          {t('date')}
+                        </label>
+                        <input
+                          type="date"
+                          name="date"
+                          id="date"
+                          required
+                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          {...register('date')}
+                        />
                       </div>
                     </div>
                   </div>

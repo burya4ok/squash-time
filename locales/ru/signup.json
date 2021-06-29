@@ -1,6 +1,7 @@
 {
     "title": "Создать аккаунт",
     "header": "Создать аккаунт",
+    "displayName": "Полное имя",
     "email": "E-mail",
     "password": "Пароль",
     "sign_up_button": "Создать",

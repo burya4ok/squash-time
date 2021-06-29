@@ -55,6 +55,21 @@ export default function Tournament() {
     return participantsWithIcons
   }, [tournament?.participants])
 
+  const participantsFiltered = useMemo(() => {
+    const participantsFiltered = []
+    const participants = [...(tournament?.participants || [])]
+    const currentUserIndex = participants.findIndex((p) => p.id === user?.id)
+
+    if (~currentUserIndex) {
+      participantsFiltered.push(...participants.splice(currentUserIndex, 1))
+      participantsFiltered.push(...participants)
+    } else {
+      participantsFiltered.push(...participants)
+    }
+
+    return participantsFiltered
+  }, [tournament?.participants])
+
   const restParticipants = useMemo(() => {
     const amountOfPerticipants = Number(tournament?.participants?.length)
     return amountOfPerticipants > MAX_PARTICIPANTS_ICON ? amountOfPerticipants - MAX_PARTICIPANTS_ICON : 0
@@ -188,7 +203,7 @@ export default function Tournament() {
                     </div>
                   ) : (
                     <div className="flex flex-col space-y-2 ">
-                      {tournament?.participants.map((participant) => (
+                      {participantsFiltered.map((participant) => (
                         <div className="inline-flex items-center">
                           {participant?.picture ? (
                             <img
@@ -241,7 +256,7 @@ export default function Tournament() {
                   </span>
                   <span>{t('price')}</span>
                 </dt>
-                <dd className="mt-1 text-sm font-medium text-yellow-600 sm:mt-0 sm:col-span-2">{tournament.price}</dd>
+                <dd className="mt-1 text-sm font-medium text-yellow-600 sm:mt-0 sm:col-span-2">{tournament.price}₴</dd>
               </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-indigo-500 flex space-x-2">

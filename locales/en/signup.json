@@ -1,6 +1,7 @@
 {
     "title": "Sign Up",
     "header": "Sign up to your account",
+    "displayName": "Full name",
     "email": "E-mail",
     "password": "Password",
     "sign_up_button": "Sign Up",

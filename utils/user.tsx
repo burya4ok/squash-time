@@ -72,7 +72,7 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
   const checkOrCreateUser = (user: any) => {
     setLoading(true)
     //after we have the credential - lets check if the user exists in firestore
-    const docRef = firestore().collection('users').doc(authUser?.uid)
+    const docRef = firestore().collection('users').doc(auth().currentUser.uid)
 
     docRef
       .get()

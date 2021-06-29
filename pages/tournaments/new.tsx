@@ -83,45 +83,6 @@ export default function NewTournament() {
                       </div>
                       <p className="mt-2 text-sm text-gray-500">{t('description_details')}</p>
                     </div>
-                    <div className="col-span-6">
-                      <label htmlFor="place" className="block text-sm font-medium text-gray-700">
-                        {t('place')}
-                      </label>
-                      <input
-                        type="text"
-                        name="place"
-                        id="place"
-                        required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        {...register('place')}
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                        {t('date')}
-                      </label>
-                      <input
-                        type="date"
-                        name="date"
-                        id="date"
-                        required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        {...register('date')}
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                        {t('time')}
-                      </label>
-                      <input
-                        type="time"
-                        name="time"
-                        id="time"
-                        required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                        {...register('time')}
-                      />
-                    </div>
                     <div className="col-span-6 sm:col-span-3">
                       <label htmlFor="participants_amount_max" className="block text-sm font-medium text-gray-700">
                         {t('participants_amount_max')}
@@ -159,6 +120,45 @@ export default function NewTournament() {
                           </span>
                         </div>
                       </div>
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="time" className="block text-sm font-medium text-gray-700">
+                        {t('time')}
+                      </label>
+                      <input
+                        type="time"
+                        name="time"
+                        id="time"
+                        required
+                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        {...register('time')}
+                      />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                        {t('date')}
+                      </label>
+                      <input
+                        type="date"
+                        name="date"
+                        id="date"
+                        required
+                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        {...register('date')}
+                      />
+                    </div>
+                    <div className="col-span-6">
+                      <label htmlFor="place" className="block text-sm font-medium text-gray-700">
+                        {t('place')}
+                      </label>
+                      <input
+                        type="text"
+                        name="place"
+                        id="place"
+                        required
+                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        {...register('place')}
+                      />
                     </div>
                   </div>
                 </div>

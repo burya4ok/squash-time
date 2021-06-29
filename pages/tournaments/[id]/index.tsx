@@ -1,11 +1,13 @@
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { Layout, LayoutTheme } from '../../../components/layout'
 import {
   faCalendar,
+  faChevronDown,
+  faChevronUp,
   faClock,
   faLocationArrow,
   faMoneyBill,
@@ -20,7 +22,10 @@ import classNames from 'classnames'
 import { firestore } from '../../../utils/firebase'
 import { format } from 'date-fns'
 
+const MAX_PARTICIPANTS_ICON = 5
+
 export default function Tournament() {
+  const [participantsOpen, setParticipantsOpen] = useState(false)
   const router = useRouter()
   const { t } = useTranslation('tournaments')
   const { user } = useUser()
@@ -34,6 +39,26 @@ export default function Tournament() {
 
     return !!tournament.participants.find((p) => p.id === user.id)
   }, [user, tournament])
+
+  const participantsWithIcons = useMemo(() => {
+    const participantsWithIcons = []
+    const participants = [...(tournament?.participants || [])]
+    const currentUserIndex = participants.findIndex((p) => p.id === user?.id)
+
+    if (~currentUserIndex) {
+      participantsWithIcons.push(...participants.splice(currentUserIndex, 1))
+      participantsWithIcons.push(...participants.slice(0, MAX_PARTICIPANTS_ICON - 1))
+    } else {
+      participantsWithIcons.push(...participants.slice(0, MAX_PARTICIPANTS_ICON))
+    }
+
+    return participantsWithIcons
+  }, [tournament?.participants])
+
+  const restParticipants = useMemo(() => {
+    const amountOfPerticipants = Number(tournament?.participants?.length)
+    return amountOfPerticipants > MAX_PARTICIPANTS_ICON ? amountOfPerticipants - MAX_PARTICIPANTS_ICON : 0
+  }, [tournament?.participants])
 
   const isFull = useMemo(() => {
     return Number(tournament?.participants_amount_max) === tournament?.participants?.length
@@ -116,36 +141,97 @@ export default function Tournament() {
           <p className="sm:px-6 px-4 text-sm text-gray-500">{tournament?.description}</p>
           <div className="mt-5 border-t border-gray-200">
             <dl className="sm:divide-y sm:divide-gray-200">
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 hover:bg-gray-100 cursor-pointer">
                 <dt className="text-sm font-medium text-green-500 flex space-x-2">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faUser} className="text-green-400" aria-hidden="true" />
                   </span>
                   <span>{t('participants')}</span>
                 </dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex -space-x-2 relative z-0 overflow-hidden">
-                  {tournament.participants.map((participant) =>
-                    participant?.picture ? (
-                      <img
-                        key={participant.id}
-                        className={classNames(
-                          'relative z-30 inline-block h-8 w-8 rounded-full ring-2 ring-white',
-                          user?.id === participant.id && 'border-2 border-red-500',
-                        )}
-                        src={participant?.picture}
-                      />
-                    ) : (
-                      <div
-                        key={participant.id}
-                        className={classNames(
-                          'bg-gray-300 relative z-30 h-8 w-8 rounded-full ring-2 ring-white  justify-center items-center flex',
-                          user?.id === participant.id && 'border-2 border-red-500',
-                        )}
-                      >
-                        <FontAwesomeIcon icon={faUser} className="block h-6 w-6 text-gray-400" aria-hidden="true" />
-                      </div>
-                    ),
+                <dd
+                  className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex justify-between items-start"
+                  onClick={() => setParticipantsOpen(!participantsOpen)}
+                >
+                  {!participantsOpen ? (
+                    <div className="flex -space-x-2 relative z-0 overflow-hidden">
+                      {participantsWithIcons.map((participant) =>
+                        participant?.picture ? (
+                          <img
+                            key={participant.id}
+                            className={classNames(
+                              'relative z-30 inline-block h-8 w-8 rounded-full ring-2 ring-white',
+                              user?.id === participant.id && 'border-2 border-green-500',
+                            )}
+                            src={participant?.picture}
+                          />
+                        ) : (
+                          <div
+                            key={participant.id}
+                            className={classNames(
+                              'bg-gray-300 relative z-30 h-8 w-8 rounded-full ring-2 ring-white justify-center items-center flex',
+                              user?.id === participant.id && 'border-2 border-green-500',
+                            )}
+                          >
+                            <FontAwesomeIcon icon={faUser} className="block h-6 w-6 text-gray-400" aria-hidden="true" />
+                          </div>
+                        ),
+                      )}
+                      {!!restParticipants && (
+                        <div
+                          className={classNames(
+                            'bg-gray-200 relative z-30 h-8 w-8 rounded-full ring-2 ring-white justify-center items-center flex',
+                          )}
+                        >
+                          <span className="flex text-base font-medium text-green-600">+{restParticipants}</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col space-y-2 ">
+                      {tournament?.participants.map((participant) => (
+                        <div className="inline-flex items-center">
+                          {participant?.picture ? (
+                            <img
+                              key={participant.id}
+                              className={classNames(
+                                'relative z-30 inline-block h-8 w-8 rounded-full ring-2 ring-white',
+                                user?.id === participant.id && 'border-2 border-green-500',
+                              )}
+                              src={participant?.picture}
+                            />
+                          ) : (
+                            <div
+                              key={participant.id}
+                              className={classNames(
+                                'bg-gray-300 relative z-30 h-8 w-8 rounded-full ring-2 ring-white justify-center items-center flex',
+                                user?.id === participant.id && 'border-2 border-green-500',
+                              )}
+                            >
+                              <FontAwesomeIcon
+                                icon={faUser}
+                                className="block h-6 w-6 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </div>
+                          )}
+                          <span
+                            className={classNames(
+                              'ml-2 text-base',
+                              user?.id === participant.id ? 'text-green-400' : 'text-gray-500',
+                            )}
+                          >
+                            {participant?.displayName}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   )}
+                  <span className="text-grey-200">
+                    <FontAwesomeIcon
+                      className="text-gray-500 text-lg"
+                      icon={participantsOpen ? faChevronUp : faChevronDown}
+                    />
+                  </span>
                 </dd>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

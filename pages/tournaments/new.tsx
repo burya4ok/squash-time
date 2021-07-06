@@ -14,6 +14,7 @@ type FormData = {
   description: string
   price: number
   date: string
+  status: string
   time: string
 }
 
@@ -27,6 +28,7 @@ export default function NewTournament() {
       .add({
         ...values,
         date: firestore.Timestamp.fromDate(combineDateAndTime(date, time)),
+        status: 'not_started',
         participants: [],
       })
       .then((doc) => {

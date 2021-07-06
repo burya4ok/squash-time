@@ -6,7 +6,7 @@
     "description": "Опис турніру",
     "description_details": "Напиши декілька речень про турнір",
     "place": "Місце проведеня",
-    "participants_amount_max": "Максимальна кількість учасників",
+    "participants_amount_max": "Кількість учасників",
     "price": "Ціна",
     "currency": "ГРН",
     "date": "Дата турнуру",
@@ -17,5 +17,13 @@
     "deletion_title": "Видалити турнір?",
     "deletion_description": "Ви впевнені, що хочете видалити турнір? Усі дані буде видалено з наших серверів назавжди. Цю дію не можна скасувати.",
     "deletion_button_confirm": "Видалити",
-    "deletion_button_cancel": "Відмінити"
+    "deletion_button_cancel": "Відмінити",
+    "not_started": "Не розпочатий",
+    "not_started_description": "Статус за замовчуванням",
+    "started": "Розпочатий",
+    "started_description": "Постав цей статус, якщо турнір розпочався",
+    "canceled": "Відмінений",
+    "canceled_description": "Постав цей статус, якщо турнір було відмінено",
+    "finished": "Закінчений",
+    "finished_description": "Постав цей статус, якщо турнір вже завершено"
 }

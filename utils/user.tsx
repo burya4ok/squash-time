@@ -11,7 +11,7 @@ export const UserContext = React.createContext({
   update: (user: any) => undefined,
 })
 
-export const LOGIN_ROUTES = ['/signin', '/signup', '/']
+export const ALLOWED_ROUTES = ['/signin', '/signup', '/', '/tournaments']
 
 export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => {
   const [user, setUser] = useState(null)
@@ -20,10 +20,10 @@ export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => 
   const router = useRouter()
 
   useEffect(() => {
-    if (!loading && !user && !authUser && !LOGIN_ROUTES.includes(router.pathname)) {
+    if (!loading && !user && !authUser && !ALLOWED_ROUTES.includes(router.pathname)) {
       router.push('/signin')
     }
-  }, [loading, user, authUser])
+  }, [loading, user, authUser, router.pathname])
 
   useEffect(() => {
     if (!authLoading && !authUser && !user) {

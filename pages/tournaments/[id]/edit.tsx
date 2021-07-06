@@ -1,16 +1,17 @@
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import React, { useEffect, useRef, useState, Fragment } from 'react'
+import React, { useEffect, useRef, useState, Fragment, useMemo, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { format } from 'date-fns'
-import { Dialog, Transition } from '@headlessui/react'
+import { Dialog, Listbox, Transition } from '@headlessui/react'
 
 import { Layout, LayoutTheme } from '../../../components/layout'
 import { useTournamentInfoOnce } from '../../../hooks/useTournamentInfo'
 import { combineDateAndTime } from '../../../utils/datetime'
 import { firestore } from '../../../utils/firebase'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faChevronDown, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import classNames from 'classnames'
 
 type FormData = {
   participants_amount_max: number
@@ -21,7 +22,15 @@ type FormData = {
   date: string
   time: string
   participants: string[]
+  status: string
 }
+
+export const statusesOptions = [
+  { title: 'not_started', description: 'not_started_description', theme: LayoutTheme.BLUE },
+  { title: 'started', description: 'started_description', theme: LayoutTheme.YELLOW },
+  { title: 'canceled', description: 'canceled_description', theme: LayoutTheme.GRAY },
+  { title: 'finished', description: 'finished_description', theme: LayoutTheme.GREEN },
+]
 
 export default function EditTournament() {
   const router = useRouter()
@@ -30,7 +39,7 @@ export default function EditTournament() {
   const cancelButtonRef = useRef(null)
 
   const [tournament, loading, error] = useTournamentInfoOnce(router.query.id)
-  const { register, handleSubmit, reset } = useForm<FormData>()
+  const { register, handleSubmit, reset, setValue } = useForm<FormData>()
 
   useEffect(() => {
     if (tournament && !loading && !error) {
@@ -71,8 +80,106 @@ export default function EditTournament() {
 
   const { t } = useTranslation('tournament-form')
 
+  const selected = useMemo(() => {
+    const status = tournament?.status || 'not_started'
+
+    return statusesOptions.find((s) => s.title === status) || statusesOptions[0]
+  }, [tournament])
+
+  const [selectedStatus, setSelectedStatus] = useState(selected)
+
+  useEffect(() => {
+    if (!loading) {
+      setSelectedStatus(selected)
+    }
+  }, [selected, loading])
+
+  const setSelected = useCallback(
+    (status) => {
+      setValue('status', status.title)
+      setSelectedStatus(status)
+    },
+    [setValue],
+  )
+
+  const theme = selectedStatus.theme
+
+  const RightContent = () => {
+    return (
+      <div>
+        <Listbox value={selectedStatus} onChange={setSelected}>
+          {({ open }) => (
+            <>
+              <Listbox.Label className="sr-only">Change published status</Listbox.Label>
+              <div className="relative">
+                <div className={`inline-flex shadow-sm rounded-md divide-x divide-${theme}-600`}>
+                  <div className={`relative z-0 inline-flex shadow-sm rounded-md divide-x divide-${theme}-600`}>
+                    <div
+                      className={`relative inline-flex items-center bg-${theme}-500 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white`}
+                    >
+                      <FontAwesomeIcon icon={faCheck} className="h-5 w-5" aria-hidden="true" />
+                      <p className="ml-2.5 text-sm font-medium">{t(selectedStatus.title)}</p>
+                    </div>
+                    <Listbox.Button
+                      className={`relative inline-flex items-center bg-${theme}-500 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-${theme}-600 focus:outline-none focus:z-10 focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-${theme}-500`}
+                    >
+                      <span className="sr-only">Change published status</span>
+                      <FontAwesomeIcon icon={faChevronDown} className="h-5 w-5 text-white" aria-hidden="true" />
+                    </Listbox.Button>
+                  </div>
+                </div>
+
+                <Transition
+                  show={open}
+                  as={Fragment}
+                  leave="transition ease-in duration-100"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Listbox.Options
+                    static
+                    className="origin-top-left absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white divide-y divide-gray-200 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  >
+                    {statusesOptions.map((option) => (
+                      <Listbox.Option
+                        key={option.title}
+                        className={({ active }) =>
+                          classNames(
+                            active ? `text-white bg-${option.theme}-500` : 'text-gray-900',
+                            'cursor-default select-none relative p-4 text-sm',
+                          )
+                        }
+                        value={option}
+                      >
+                        {({ selected, active }) => (
+                          <div className="flex flex-col">
+                            <div className="flex justify-between">
+                              <p className={selected ? 'font-semibold' : 'font-normal'}>{t(option.title)}</p>
+                              {selected ? (
+                                <span className={active ? 'text-white' : `text-${option.theme}-500`}>
+                                  <FontAwesomeIcon icon={faCheck} className="h-5 w-5" aria-hidden="true" />
+                                </span>
+                              ) : null}
+                            </div>
+                            <p className={classNames(active ? `text-${option.theme}-200` : 'text-gray-500', 'mt-2')}>
+                              {t(option.description)}
+                            </p>
+                          </div>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </Transition>
+              </div>
+            </>
+          )}
+        </Listbox>
+      </div>
+    )
+  }
+
   return (
-    <Layout title={t('title_edit')} theme={LayoutTheme.YELLOW}>
+    <Layout title={t('title_edit')} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
         <div>Loading...</div>
       ) : (
@@ -197,20 +304,23 @@ export default function EditTournament() {
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    <button
-                      onClick={onDelete}
-                      type="button"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mr-4"
-                    >
-                      {t('delete')}
-                    </button>
-                    <button
-                      type="submit"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
-                    >
-                      {t('edit')}
-                    </button>
+                  <div className="px-4 py-3 bg-gray-50 text-right sm:px-6 flex justify-between overflow-visible">
+                    <div className="relative"></div>
+                    <div>
+                      <button
+                        onClick={onDelete}
+                        type="button"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 mr-4"
+                      >
+                        {t('delete')}
+                      </button>
+                      <button
+                        type="submit"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                      >
+                        {t('edit')}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </form>

@@ -17,5 +17,13 @@
     "deletion_title": "Delete the tournament?",
     "deletion_description": "Are you sure you want to delete the tournament? All of the data will be permanently removed from our servers forever. This action cannot be undone.",
     "deletion_button_confirm": "Delete",
-    "deletion_button_cancel": "Cancel"
+    "deletion_button_cancel": "Cancel",
+    "not_started": "Not started",
+    "not_started_description": "Default status",
+    "started": "Started",
+    "started_description": "Set this status if the tournament is started",
+    "canceled": "Canceled",
+    "canceled_description": "Set this status if the tournament was canceled",
+    "finished": "Finished",
+    "finished_description": "Set this status if the tournament is finished"
 }

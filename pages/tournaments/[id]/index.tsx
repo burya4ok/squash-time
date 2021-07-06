@@ -9,6 +9,7 @@ import {
   faChevronDown,
   faChevronUp,
   faClock,
+  faInfoCircle,
   faLocationArrow,
   faMoneyBill,
   faPen,
@@ -21,6 +22,7 @@ import { useUser } from '../../../hooks/useUser'
 import classNames from 'classnames'
 import { firestore } from '../../../utils/firebase'
 import { format } from 'date-fns'
+import { statusesOptions } from './edit'
 
 const MAX_PARTICIPANTS_ICON = 5
 
@@ -99,14 +101,21 @@ export default function Tournament() {
       })
   }
 
+  const theme = useMemo(
+    () => statusesOptions.find((s) => s.title === tournament?.status)?.theme || LayoutTheme.BLUE,
+    [tournament],
+  )
+
+  const isAllowedToParticipate = useMemo(() => tournament?.status === 'not_started', [tournament])
+
   return (
-    <Layout title={tournament?.name} description={tournament?.description} hideTitle theme={LayoutTheme.GREEN}>
+    <Layout title={tournament?.name} description={tournament?.description} hideTitle theme={theme}>
       {loading || error || !tournament ? (
         <div>Loading...</div>
       ) : (
         <div>
           <div className="bg-white px-4 py-5 border-gray-200 sm:px-6">
-            <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap flex-nowrap">
+            <div className="-ml-4 -mt-2 flex items-center justify-between flex-nowrap">
               <div className="ml-4 mt-2">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">{tournament?.name}</h3>
               </div>
@@ -123,41 +132,54 @@ export default function Tournament() {
                     <span className="hidden md:block ml-2 text-sm h-5">{t('edit')}</span>
                   </button>
                 )}
-                {isParticipant ? (
-                  <button
-                    onClick={onLeaveTournament}
-                    type="button"
-                    className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                  >
-                    <span className="h-5 w-4">
-                      <FontAwesomeIcon icon={faSignOutAlt} />
-                    </span>
-                    <span className="hidden md:block ml-2 text-sm h-5">{t('leave')}</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={onParticipate}
-                    type="button"
-                    disabled={isFull}
-                    className={classNames(
-                      'relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50',
-                      { 'cursor-not-allowed hover:bg-green-700': isFull },
-                    )}
-                  >
-                    <span className="h-5 w-4">
-                      <FontAwesomeIcon icon={faPlus} />
-                    </span>
-                    <span className="hidden md:block ml-2 text-sm h-5">{t('join')}</span>
-                  </button>
-                )}
+                {isAllowedToParticipate ? (
+                  isParticipant ? (
+                    <button
+                      onClick={onLeaveTournament}
+                      type="button"
+                      className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                    >
+                      <span className="h-5 w-4">
+                        <FontAwesomeIcon icon={faSignOutAlt} />
+                      </span>
+                      <span className="hidden md:block ml-2 text-sm h-5">{t('leave')}</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={onParticipate}
+                      type="button"
+                      disabled={isFull}
+                      className={classNames(
+                        'relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50',
+                        { 'cursor-not-allowed hover:bg-green-700': isFull },
+                      )}
+                    >
+                      <span className="h-5 w-4">
+                        <FontAwesomeIcon icon={faPlus} />
+                      </span>
+                      <span className="hidden md:block ml-2 text-sm h-5">{t('join')}</span>
+                    </button>
+                  )
+                ) : null}
               </div>
             </div>
           </div>
           <p className="sm:px-6 px-4 text-sm text-gray-500">{tournament?.description}</p>
           <div className="mt-5 border-t border-gray-200">
             <dl className="sm:divide-y sm:divide-gray-200">
+              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className={`text-lg font-medium text-${theme}-500 flex space-x-2 pl-1`}>
+                  <span className="h-5 w-4">
+                    <FontAwesomeIcon icon={faInfoCircle} className={`text-${theme}-400`} aria-hidden="true" />
+                  </span>
+                  <span>{t('status')}</span>
+                </dt>
+                <dd className={`mt-1 text-lg font-medium text-${theme}-600 sm:mt-0 sm:col-span-2 pl-1`}>
+                  {t(tournament.status)}
+                </dd>
+              </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 hover:bg-gray-100 cursor-pointer">
-                <dt className="text-sm font-medium text-green-500 flex space-x-2">
+                <dt className="text-sm font-medium text-green-500 flex space-x-2 pl-1">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faUser} className="text-green-400" aria-hidden="true" />
                   </span>
@@ -204,10 +226,9 @@ export default function Tournament() {
                   ) : (
                     <div className="flex flex-col space-y-2 p-1">
                       {participantsFiltered.map((participant) => (
-                        <div className="inline-flex items-center">
+                        <div className="inline-flex items-center" key={participant.id}>
                           {participant?.picture ? (
                             <img
-                              key={participant.id}
                               className={classNames(
                                 'relative z-30 inline-block h-8 w-8 rounded-full ring-2 ring-white',
                                 user?.id === participant.id && 'border-2 border-green-500',
@@ -216,7 +237,6 @@ export default function Tournament() {
                             />
                           ) : (
                             <div
-                              key={participant.id}
                               className={classNames(
                                 'bg-gray-300 relative z-30 h-8 w-8 rounded-full ring-2 ring-white justify-center items-center flex',
                                 user?.id === participant.id && 'border-2 border-green-500',
@@ -249,45 +269,49 @@ export default function Tournament() {
                   </span>
                 </dd>
               </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-yellow-500 flex space-x-2">
-                  <span className="h-5 w-4">
-                    <FontAwesomeIcon icon={faMoneyBill} className="text-yellow-400" aria-hidden="true" />
-                  </span>
-                  <span>{t('price')}</span>
-                </dt>
-                <dd className="mt-1 text-sm font-medium text-yellow-600 sm:mt-0 sm:col-span-2">{tournament.price}₴</dd>
-              </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-indigo-500 flex space-x-2">
+                <dt className="text-sm font-medium text-indigo-500 flex space-x-2 pl-1">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faClock} className="text-indigo-400" aria-hidden="true" />
                   </span>
                   <span>{t('time')}</span>
                 </dt>
-                <dd className="mt-1 text-sm font-medium text-indigo-600 sm:mt-0 sm:col-span-2">
+                <dd className="mt-1 text-sm font-medium text-indigo-600 sm:mt-0 sm:col-span-2 pl-1">
                   {format(new Date(tournament.date.toDate()), 'hh:mm')}
                 </dd>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-indigo-500 flex space-x-2">
+                <dt className="text-sm font-medium text-indigo-500 flex space-x-2 pl-1">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faCalendar} className="text-indigo-400" aria-hidden="true" />
                   </span>
                   <span>{t('date')}</span>
                 </dt>
-                <dd className="mt-1 text-sm font-medium text-indigo-600 sm:mt-0 sm:col-span-2">
+                <dd className="mt-1 text-sm font-medium text-indigo-600 sm:mt-0 sm:col-span-2 pl-1">
                   {format(new Date(tournament.date.toDate()), 'dd-MM-yyyy')}
                 </dd>
               </div>
+              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-yellow-500 flex space-x-2 pl-1">
+                  <span className="h-5 w-4">
+                    <FontAwesomeIcon icon={faMoneyBill} className="text-yellow-400" aria-hidden="true" />
+                  </span>
+                  <span>{t('price')}</span>
+                </dt>
+                <dd className="mt-1 text-sm font-medium text-yellow-600 sm:mt-0 sm:col-span-2 pl-1">
+                  {tournament.price}₴
+                </dd>
+              </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-purple-500 flex space-x-2">
+                <dt className="text-sm font-medium text-purple-500 flex space-x-2 pl-1">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faLocationArrow} className="text-purple-400" aria-hidden="true" />
                   </span>
                   <span>{t('place')}</span>
                 </dt>
-                <dd className="mt-1 text-sm font-medium text-purple-600 sm:mt-0 sm:col-span-2">{tournament.place}</dd>
+                <dd className="mt-1 text-sm font-medium text-purple-600 sm:mt-0 sm:col-span-2 pl-1">
+                  {tournament.place}
+                </dd>
               </div>
             </dl>
           </div>

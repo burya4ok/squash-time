@@ -8,7 +8,7 @@
     "place": "Место проведения",
     "date": "Дата турнура",
     "time": "Время турнира",
-    "participants_amount_max": "Максимальное колличество участников",
+    "participants_amount_max": "Колличество участников",
     "price": "Цена",
     "currency": "ГРН",
     "create": "Создать",
@@ -17,5 +17,13 @@
     "deletion_title": "Удалить турнир?",
     "deletion_description": "Вы уверены, что хотите удлаить турнир? Все данные будут удалены с наших серверов навсегда. Это действие нельзя отменить.",
     "deletion_button_confirm": "Удалить",
-    "deletion_button_cancel": "Отмена"
+    "deletion_button_cancel": "Отмена",
+    "not_started": "Не начатый",
+    "not_started_description": "Статус по умолчанию",
+    "started": "Начатый",
+    "started_description": "Поставь этот статус, если турнир начался",
+    "canceled": "Отмененый",
+    "canceled_description": "Поставь этот статус, если турнир было отменено",
+    "finished": "Законченый",
+    "finished_description": "Поставь этот статус, если турнир уже законченый"
 }

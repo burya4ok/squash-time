@@ -8,5 +8,10 @@
     "price": "Price",
     "time": "Time",
     "date": "Date",
-    "place": "Place"
+    "place": "Place",
+    "status": "Status",
+    "not_started": "Not started",
+    "started": "Started",
+    "canceled": "Canceled",
+    "finished": "Finished"
 }

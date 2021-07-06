@@ -30,12 +30,16 @@ export enum LayoutTheme {
   BLUE = 'indigo',
   GREEN = 'green',
   YELLOW = 'yellow',
+  RED = 'red',
+  GRAY = 'gray',
 }
 
 const ThemeColors = {
   [LayoutTheme.BLUE]: 'rgb(79, 70, 229)',
   [LayoutTheme.GREEN]: 'rgb(5, 150, 105)',
   [LayoutTheme.YELLOW]: 'rgb(217, 119, 6)',
+  [LayoutTheme.RED]: 'rgb(239, 68, 68)',
+  [LayoutTheme.GRAY]: 'rgb(107, 114, 128)',
 }
 
 type LayoutProps = {

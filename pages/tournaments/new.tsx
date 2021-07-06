@@ -64,7 +64,7 @@ export default function NewTournament() {
                         name="name"
                         id="name"
                         required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         {...register('name')}
                       />
                     </div>
@@ -94,7 +94,7 @@ export default function NewTournament() {
                         name="participants_amount_max"
                         id="participants_amount_max"
                         required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         {...register('participants_amount_max')}
                       />
                     </div>
@@ -110,7 +110,7 @@ export default function NewTournament() {
                           type="number"
                           name="price"
                           id="price"
-                          className="focus:ring-green-500 focus:border-green-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                          className="focus:ring-green-500 h-10  focus:border-green-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                           placeholder="0.00"
                           required
                           aria-describedby="price-currency"
@@ -132,7 +132,7 @@ export default function NewTournament() {
                         name="time"
                         id="time"
                         required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         {...register('time')}
                       />
                     </div>
@@ -145,7 +145,7 @@ export default function NewTournament() {
                         name="date"
                         id="date"
                         required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         {...register('date')}
                       />
                     </div>
@@ -158,7 +158,7 @@ export default function NewTournament() {
                         name="place"
                         id="place"
                         required
-                        className="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         {...register('place')}
                       />
                     </div>

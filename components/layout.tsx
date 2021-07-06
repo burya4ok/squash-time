@@ -39,7 +39,7 @@ const ThemeColors = {
   [LayoutTheme.GREEN]: 'rgb(5, 150, 105)',
   [LayoutTheme.YELLOW]: 'rgb(217, 119, 6)',
   [LayoutTheme.RED]: 'rgb(239, 68, 68)',
-  [LayoutTheme.GRAY]: 'rgb(107, 114, 128)',
+  [LayoutTheme.GRAY]: 'rgb(75, 85, 99)',
 }
 
 type LayoutProps = {

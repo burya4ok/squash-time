@@ -20,11 +20,13 @@ const navigation = [
   },
 ]
 
-const profile = [
+const profileLinks = [
   { label: 'profile', href: '/profile' },
   { label: 'settings', href: '/settings' },
   { label: 'signout', href: '/signout' },
 ]
+
+const profileLinksWithoutUser = [{ label: 'signin', href: '/signin' }]
 
 export enum LayoutTheme {
   BLUE = 'indigo',
@@ -66,6 +68,8 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
   const themeColor = useMemo(() => {
     return ThemeColors[theme]
   }, [theme])
+
+  const links = !user ? profileLinksWithoutUser : profileLinks
 
   return (
     <>
@@ -160,7 +164,6 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
                     </div>
                     <div className="hidden lg:block lg:ml-4">
                       <div className="flex items-center">
-                        {/* Profile dropdown */}
                         <Menu as="div" className="ml-3 relative flex-shrink-0">
                           {({ open }) => (
                             <>
@@ -197,7 +200,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
                                   static
                                   className="z-30 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 >
-                                  {profile.map((item) => (
+                                  {links.map((item) => (
                                     <Menu.Item key={item.label}>
                                       {({ active }) =>
                                         item.href === '/signout' ? (
@@ -248,23 +251,29 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
                     ))}
                   </div>
                   <div className={`pt-4 pb-3 border-t border-${theme}-700`}>
-                    <div className="px-5 flex items-center">
-                      <div className="flex-shrink-0">
-                        {user?.picture ? (
-                          <img className="rounded-full h-10 w-10" src={user?.picture} alt="" />
-                        ) : (
-                          <div className="rounded-full bg-white h-10 w-10 justify-center items-center flex">
-                            <FontAwesomeIcon icon={faUser} className="block h-6 w-6 text-gray-400" aria-hidden="true" />
-                          </div>
-                        )}
+                    {user ? (
+                      <div className="px-5 flex items-center">
+                        <div className="flex-shrink-0">
+                          {user?.picture ? (
+                            <img className="rounded-full h-10 w-10" src={user?.picture} alt="" />
+                          ) : (
+                            <div className="rounded-full bg-white h-10 w-10 justify-center items-center flex">
+                              <FontAwesomeIcon
+                                icon={faUser}
+                                className="block h-6 w-6 text-gray-400"
+                                aria-hidden="true"
+                              />
+                            </div>
+                          )}
+                        </div>
+                        <div className="ml-3">
+                          <div className="text-base font-medium text-white">{user?.displayName}</div>
+                          <div className={`text-sm font-medium text-${theme}-300`}>{user?.email}</div>
+                        </div>
                       </div>
-                      <div className="ml-3">
-                        <div className="text-base font-medium text-white">{user?.displayName}</div>
-                        <div className={`text-sm font-medium text-${theme}-300`}>{user?.email}</div>
-                      </div>
-                    </div>
+                    ) : null}
                     <div className="mt-3 px-2 space-y-1">
-                      {profile.map((item) =>
+                      {links.map((item) =>
                         item.href === '/signout' ? (
                           <button
                             key={item.label}

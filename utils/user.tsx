@@ -11,7 +11,7 @@ export const UserContext = React.createContext({
   update: (user: any) => undefined,
 })
 
-export const ALLOWED_ROUTES = ['/signin', '/signup', '/', '/tournaments']
+export const ALLOWED_ROUTES = ['/signin', '/signup', '/', '/tournaments', '/tournaments/[id]']
 
 export const UserProvider: React.FC<PropsWithChildren<any>> = ({ children }) => {
   const [user, setUser] = useState(null)

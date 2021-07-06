@@ -13,6 +13,7 @@ import {
   faLocationArrow,
   faMoneyBill,
   faPen,
+  faPhone,
   faPlus,
   faSignOutAlt,
   faUser,
@@ -82,11 +83,15 @@ export default function Tournament() {
   }, [tournament])
 
   const onParticipate = () => {
-    firestore()
-      .doc(`tournaments/${router.query.id}`)
-      .update({
-        participants: firestore.FieldValue.arrayUnion(user.ref),
-      })
+    if (!user) {
+      router.push('/signin')
+    } else {
+      firestore()
+        .doc(`tournaments/${router.query.id}`)
+        .update({
+          participants: firestore.FieldValue.arrayUnion(user.ref),
+        })
+    }
   }
 
   const onEdit = () => {
@@ -99,6 +104,13 @@ export default function Tournament() {
       .update({
         participants: firestore.FieldValue.arrayRemove(user.ref),
       })
+  }
+
+  const onPressParticipant = (participant) => (e) => {
+    if (participant?.phone) {
+      e.stopPropagation()
+      window.open(`tel:${participant?.phone}`, '_self')
+    }
   }
 
   const theme = useMemo(
@@ -226,7 +238,11 @@ export default function Tournament() {
                   ) : (
                     <div className="flex flex-col space-y-2 p-1">
                       {participantsFiltered.map((participant) => (
-                        <div className="inline-flex items-center" key={participant.id}>
+                        <div
+                          className="inline-flex items-center"
+                          key={participant.id}
+                          onClick={onPressParticipant(participant)}
+                        >
                           {participant?.picture ? (
                             <img
                               className={classNames(
@@ -257,6 +273,11 @@ export default function Tournament() {
                           >
                             {participant?.displayName}
                           </span>
+                          {participant?.phone ? (
+                            <span className="w-5 pl-2">
+                              <FontAwesomeIcon icon={faPhone} className="text-gray-500" />
+                            </span>
+                          ) : null}
                         </div>
                       ))}
                     </div>

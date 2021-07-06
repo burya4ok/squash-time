@@ -9,6 +9,7 @@
     "time": "Time",
     "date": "Date",
     "place": "Place",
+    "empty": "There is no one yet",
     "status": "Status",
     "not_started": "Not started",
     "started": "Started",

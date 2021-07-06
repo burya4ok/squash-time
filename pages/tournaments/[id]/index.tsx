@@ -82,6 +82,10 @@ export default function Tournament() {
     return Number(tournament?.participants_amount_max) === tournament?.participants?.length
   }, [tournament])
 
+  const isEmpty = useMemo(() => {
+    return tournament?.participants?.length === 0
+  }, [tournament])
+
   const onParticipate = () => {
     if (!user) {
       router.push('/signin')
@@ -199,7 +203,7 @@ export default function Tournament() {
                 </dt>
                 <dd
                   className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex justify-between items-start"
-                  onClick={() => setParticipantsOpen(!participantsOpen)}
+                  onClick={() => !isEmpty && setParticipantsOpen(!participantsOpen)}
                 >
                   {!participantsOpen ? (
                     <div className="flex -space-x-2 relative z-0 overflow-hidden h-10 p-1">
@@ -234,6 +238,7 @@ export default function Tournament() {
                           <span className="flex text-base font-medium text-green-600">+{restParticipants}</span>
                         </div>
                       )}
+                      {isEmpty && <span className="text-gray-400">{t('empty')}</span>}
                     </div>
                   ) : (
                     <div className="flex flex-col space-y-2 p-1">
@@ -282,12 +287,14 @@ export default function Tournament() {
                       ))}
                     </div>
                   )}
-                  <span className="text-grey-200">
-                    <FontAwesomeIcon
-                      className="text-gray-500 text-lg"
-                      icon={participantsOpen ? faChevronUp : faChevronDown}
-                    />
-                  </span>
+                  {!isEmpty && (
+                    <span className="text-grey-200">
+                      <FontAwesomeIcon
+                        className="text-gray-500 text-lg"
+                        icon={participantsOpen ? faChevronUp : faChevronDown}
+                      />
+                    </span>
+                  )}
                 </dd>
               </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

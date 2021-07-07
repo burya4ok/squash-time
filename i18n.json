@@ -11,6 +11,7 @@
       "/tournaments/[id]": ["tournaments"],
       "/tournaments/new": ["tournament-form"],
       "/tournaments/[id]/edit": ["tournament-form"],
+      "/tournaments/[id]/matches": ["tournaments"],
       "/settings": ["settings"],
       "/profile": ["profile"]
     }

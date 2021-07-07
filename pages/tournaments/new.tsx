@@ -14,8 +14,9 @@ type FormData = {
   description: string
   price: number
   date: string
-  status: string
   time: string
+  status: string
+  courts_amount: number
 }
 
 export default function NewTournament() {
@@ -99,29 +100,17 @@ export default function NewTournament() {
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                        {t('price')}
+                      <label htmlFor="courts_amount" className="block text-sm font-medium text-gray-700">
+                        {t('courts_amount')}
                       </label>
-                      <div className="mt-1 relative rounded-md shadow-sm">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <span className="text-gray-500 sm:text-sm">₴</span>
-                        </div>
-                        <input
-                          type="number"
-                          name="price"
-                          id="price"
-                          className="focus:ring-green-500 h-10  focus:border-green-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                          placeholder="0.00"
-                          required
-                          aria-describedby="price-currency"
-                          {...register('price')}
-                        />
-                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                          <span className="text-gray-500 sm:text-sm" id="price-currency">
-                            {t('currency')}
-                          </span>
-                        </div>
-                      </div>
+                      <input
+                        type="number"
+                        name="courts_amount"
+                        id="courts_amount"
+                        required
+                        className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        {...register('courts_amount')}
+                      />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <label htmlFor="time" className="block text-sm font-medium text-gray-700">
@@ -148,6 +137,31 @@ export default function NewTournament() {
                         className="mt-1 h-10 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         {...register('date')}
                       />
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+                        {t('price')}
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <span className="text-gray-500 sm:text-sm">₴</span>
+                        </div>
+                        <input
+                          type="number"
+                          name="price"
+                          id="price"
+                          className="focus:ring-green-500 h-10  focus:border-green-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                          placeholder="0.00"
+                          required
+                          aria-describedby="price-currency"
+                          {...register('price')}
+                        />
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                          <span className="text-gray-500 sm:text-sm" id="price-currency">
+                            {t('currency')}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     <div className="col-span-6">
                       <label htmlFor="place" className="block text-sm font-medium text-gray-700">

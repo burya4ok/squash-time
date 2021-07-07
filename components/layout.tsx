@@ -48,6 +48,7 @@ type LayoutProps = {
   title?: string
   description?: string
   hideTitle?: boolean
+  backButton?: boolean
   theme?: LayoutTheme
   RightContent?: React.FC<any>
 }

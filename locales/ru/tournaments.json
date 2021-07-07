@@ -19,5 +19,11 @@
     "add_to_calendar_google": "Добавить в календарь Google",
     "add_to_calendar_outlook": "Добавить в календарь Outlook",
     "add_to_calendar_office365": "Добавить в календарь Office365",
-    "add_to_calendar_yahoo": "Добавить в календарь Yahoo"
+    "add_to_calendar_yahoo": "Добавить в календарь Yahoo",
+    "start_tournament": "Начать турнир",
+    "go_to_matches": "Перейти к матчам",
+    "start_tournament_title": "Вы уверены, что хотите начать турнир?",
+    "start_tournament_description": "После старта турнира, его уже не можна будет изменить и никто не сможет присоедениться.",
+    "start_tournament_confirm": "Начать турнир",
+    "start_tournament_cancel": "Отменить"
 }

@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import React, { useMemo, useState, Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import React, { useMemo, useState, Fragment, useCallback, useRef } from 'react'
+import { Menu, Dialog, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { google, outlook, office365, yahoo, ics, CalendarEvent } from 'calendar-link'
 
@@ -9,8 +9,10 @@ import { Layout, LayoutTheme } from '../../../components/layout'
 import {
   faCalendar,
   faChevronDown,
+  faChevronRight,
   faChevronUp,
   faClock,
+  faExclamationTriangle,
   faInfoCircle,
   faLocationArrow,
   faMoneyBill,
@@ -26,6 +28,7 @@ import classNames from 'classnames'
 import { firestore } from '../../../utils/firebase'
 import { format } from 'date-fns'
 import { statusesOptions } from './edit'
+import { createMatches } from '../../../utils/matchesCreator'
 
 const MAX_PARTICIPANTS_ICON = 5
 
@@ -38,6 +41,9 @@ const getCalendarLinks = (event) => [
 
 export default function Tournament() {
   const [participantsOpen, setParticipantsOpen] = useState(false)
+  const [startModalOpen, setStartModalOpen] = useState(false)
+  const cancelButtonRef = useRef(null)
+
   const router = useRouter()
   const { t } = useTranslation('tournaments')
   const { user } = useUser()
@@ -204,6 +210,28 @@ export default function Tournament() {
       </span>
     )
 
+  const onStartTournament = useCallback(() => {
+    setStartModalOpen(true)
+  }, [])
+
+  const onConfirmStarting = useCallback(() => {
+    const matches = createMatches(tournament?.participants || [], tournament?.ref)
+
+    Promise.all(matches.map((match) => firestore().collection('matches').add(match)))
+      .then(() =>
+        firestore().doc(`tournaments/${router.query.id}`).update({
+          status: 'started',
+        }),
+      )
+      .then(() => {
+        setStartModalOpen(false)
+      })
+  }, [router, tournament])
+
+  const onGoToMatches = useCallback(() => {
+    router.push(`/tournaments/${router.query.id}/matches`)
+  }, [router])
+
   return (
     <Layout title={tournament?.name} description={tournament?.description} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
@@ -216,7 +244,7 @@ export default function Tournament() {
                 <h3 className="text-lg leading-6 text-gray-600">{tournament?.description}</h3>
               </div>
               <div className="ml-2 mt-2 flex-shrink-0 sm:ml-4">
-                {user?.isAdmin && (
+                {user?.isAdmin && !!~['not_started', 'canceled'].indexOf(tournament?.status) && (
                   <button
                     onClick={onEdit}
                     type="button"
@@ -420,8 +448,105 @@ export default function Tournament() {
                   {tournament.place}
                 </dd>
               </div>
+              <div className="flex flex-col justify-center">
+                {tournament?.status === 'not_started' && user?.isAdmin && (
+                  <button
+                    onClick={onStartTournament}
+                    type="button"
+                    className="inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  >
+                    {t('start_tournament')}
+                  </button>
+                )}
+
+                {tournament?.status === 'started' && (
+                  <button
+                    onClick={onGoToMatches}
+                    type="button"
+                    className="inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  >
+                    {t('go_to_matches')}
+                    <FontAwesomeIcon icon={faChevronRight} className="h-10 ml-2" />
+                  </button>
+                )}
+              </div>
             </dl>
           </div>
+          <Transition.Root show={startModalOpen} as={Fragment}>
+            <Dialog
+              as="div"
+              static
+              className="fixed z-10 inset-0 overflow-y-auto"
+              initialFocus={cancelButtonRef}
+              open={startModalOpen}
+              onClose={setStartModalOpen}
+            >
+              <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                </Transition.Child>
+
+                {/* This element is to trick the browser into centering the modal contents. */}
+                <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                  &#8203;
+                </span>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                  enterTo="opacity-100 translate-y-0 sm:scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                  leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                >
+                  <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <FontAwesomeIcon
+                          icon={faExclamationTriangle}
+                          className="h-6 w-6 text-green-600"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                          {t('start_tournament_title')}
+                        </Dialog.Title>
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-500">{t('start_tournament_description')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                      <button
+                        type="button"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={onConfirmStarting}
+                      >
+                        {t('start_tournament_confirm')}
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:mt-0 sm:w-auto sm:text-sm"
+                        onClick={() => setStartModalOpen(false)}
+                        ref={cancelButtonRef}
+                      >
+                        {t('start_tournament_cancel')}
+                      </button>
+                    </div>
+                  </div>
+                </Transition.Child>
+              </div>
+            </Dialog>
+          </Transition.Root>
         </div>
       )}
     </Layout>

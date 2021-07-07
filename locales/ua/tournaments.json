@@ -19,5 +19,11 @@
     "add_to_calendar_google": "Додати в календар Google",
     "add_to_calendar_outlook": "Додати в календар Outlook",
     "add_to_calendar_office365": "Додати в календар Office365",
-    "add_to_calendar_yahoo": "Додати в календар Yahoo"
+    "add_to_calendar_yahoo": "Додати в календар Yahoo",
+    "start_tournament": "Розпочати турнір",
+    "go_to_matches": "Перейти до матчів",
+    "start_tournament_title": "Ви впевнені, що хочете розпочати турнір?",
+    "start_tournament_description": "Після старту турніру, його вже не можна буде редагувати та ніхто не зможе приєднатись.",
+    "start_tournament_confirm": "Розпочати турнір",
+    "start_tournament_cancel": "Відмінити"
 }

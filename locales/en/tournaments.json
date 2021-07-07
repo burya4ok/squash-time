@@ -19,5 +19,11 @@
     "add_to_calendar_google": "Add to Google calendar",
     "add_to_calendar_outlook": "Add to Outlook calendar",
     "add_to_calendar_office365": "Add to Office365 calendar",
-    "add_to_calendar_yahoo": "Add to Yahoo calendar"
+    "add_to_calendar_yahoo": "Add to Yahoo calendar",
+    "start_tournament": "Start tournament",
+    "go_to_matches": "Go to matches",
+    "start_tournament_title": "Are you sure you want to start the tournament?",
+    "start_tournament_description": "After the tournament is started you can not edit it and no one could join it.",
+    "start_tournament_confirm": "Start the tournament",
+    "start_tournament_cancel": "Cancel"
 }

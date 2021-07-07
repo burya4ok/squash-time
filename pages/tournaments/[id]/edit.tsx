@@ -21,15 +21,15 @@ type FormData = {
   price: number
   date: string
   time: string
-  participants: string[]
   status: string
+  courts_amount: number
 }
 
 export const statusesOptions = [
   { title: 'not_started', description: 'not_started_description', theme: LayoutTheme.BLUE },
-  { title: 'started', description: 'started_description', theme: LayoutTheme.YELLOW },
+  { title: 'started', description: 'started_description', theme: LayoutTheme.GREEN },
   { title: 'canceled', description: 'canceled_description', theme: LayoutTheme.GRAY },
-  { title: 'finished', description: 'finished_description', theme: LayoutTheme.GREEN },
+  { title: 'finished', description: 'finished_description', theme: LayoutTheme.YELLOW },
 ]
 
 export default function EditTournament() {
@@ -43,13 +43,15 @@ export default function EditTournament() {
 
   useEffect(() => {
     if (tournament && !loading && !error) {
-      const date = format(new Date(tournament.date.toDate()), 'yyyy-MM-dd')
-      const time = format(new Date(tournament.date.toDate()), 'hh:mm')
-      reset({ ...tournament, date, time })
+      const { participants, ...data } = tournament
+      const date = format(new Date(data.date.toDate()), 'yyyy-MM-dd')
+      const time = format(new Date(data.date.toDate()), 'hh:mm')
+
+      reset({ ...data, date, time })
     }
   }, [tournament, loading, error])
 
-  const onSubmit = handleSubmit(({ date, time, participants, ...values }) => {
+  const onSubmit = handleSubmit(({ date, time, ...values }) => {
     firestore()
       .doc(`tournaments/${router.query.id}`)
       .update({
@@ -239,29 +241,17 @@ export default function EditTournament() {
                         />
                       </div>
                       <div className="col-span-6 sm:col-span-3">
-                        <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                          {t('price')}
+                        <label htmlFor="courts_amount" className="block text-sm font-medium text-gray-700">
+                          {t('courts_amount')}
                         </label>
-                        <div className="mt-1 relative rounded-md shadow-sm">
-                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm">₴</span>
-                          </div>
-                          <input
-                            type="number"
-                            name="price"
-                            id="price"
-                            className="focus:ring-yellow-500 focus:border-yellow-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                            placeholder="0.00"
-                            required
-                            aria-describedby="price-currency"
-                            {...register('price')}
-                          />
-                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm" id="price-currency">
-                              {t('currency')}
-                            </span>
-                          </div>
-                        </div>
+                        <input
+                          type="number"
+                          name="courts_amount"
+                          id="courts_amount"
+                          required
+                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          {...register('courts_amount')}
+                        />
                       </div>
                       <div className="col-span-6 sm:col-span-3">
                         <label htmlFor="time" className="block text-sm font-medium text-gray-700">
@@ -288,6 +278,31 @@ export default function EditTournament() {
                           className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('date')}
                         />
+                      </div>
+                      <div className="col-span-6 sm:col-span-3">
+                        <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+                          {t('price')}
+                        </label>
+                        <div className="mt-1 relative rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 sm:text-sm">₴</span>
+                          </div>
+                          <input
+                            type="number"
+                            name="price"
+                            id="price"
+                            className="focus:ring-yellow-500 focus:border-yellow-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                            placeholder="0.00"
+                            required
+                            aria-describedby="price-currency"
+                            {...register('price')}
+                          />
+                          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span className="text-gray-500 sm:text-sm" id="price-currency">
+                              {t('currency')}
+                            </span>
+                          </div>
+                        </div>
                       </div>
                       <div className="col-span-6">
                         <label htmlFor="place" className="block text-sm font-medium text-gray-700">

@@ -1,7 +1,9 @@
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { google, outlook, office365, yahoo, ics, CalendarEvent } from 'calendar-link'
 
 import { Layout, LayoutTheme } from '../../../components/layout'
 import {
@@ -26,6 +28,13 @@ import { format } from 'date-fns'
 import { statusesOptions } from './edit'
 
 const MAX_PARTICIPANTS_ICON = 5
+
+const getCalendarLinks = (event) => [
+  { title: 'add_to_calendar_google', link: google(event) },
+  { title: 'add_to_calendar_outlook', link: outlook(event) },
+  { title: 'add_to_calendar_office365', link: office365(event) },
+  { title: 'add_to_calendar_yahoo', link: yahoo(event) },
+]
 
 export default function Tournament() {
   const [participantsOpen, setParticipantsOpen] = useState(false)
@@ -124,8 +133,79 @@ export default function Tournament() {
 
   const isAllowedToParticipate = useMemo(() => tournament?.status === 'not_started', [tournament])
 
+  const calendarEvent = useMemo(
+    (): CalendarEvent => ({
+      title: tournament?.name,
+      description: tournament?.description,
+      location: tournament?.place,
+      start: tournament?.date.toDate(),
+      duration: [2, 'hours'],
+    }),
+    [tournament],
+  )
+
+  const calendarLinks = useMemo(() => getCalendarLinks(calendarEvent), [calendarEvent])
+
+  const RightContent = () =>
+    !isAllowedToParticipate ? null : (
+      <span className="inline-flex shadow-sm rounded-md">
+        <a
+          href={ics(calendarEvent)}
+          className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-200 focus:border-gray-200"
+        >
+          <FontAwesomeIcon icon={faCalendar} className="text-gray-400 mr-4" aria-hidden="true" />
+          {t('add_to_calendar_default')}
+        </a>
+        <Menu as="span" className="-ml-px h-auto relative block">
+          {({ open }) => (
+            <>
+              <Menu.Button className="relative h-full inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-gray-200 focus:border-gray-200">
+                <span className="sr-only">Open options</span>
+                <FontAwesomeIcon icon={faChevronDown} className="h-5 w-5" aria-hidden="true" />
+              </Menu.Button>
+              <Transition
+                show={open}
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items
+                  static
+                  className="origin-top-right z-20 absolute right-0 mt-2 -mr-1 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                >
+                  <div className="py-1">
+                    {calendarLinks.map((item) => (
+                      <Menu.Item key={item.title}>
+                        {({ active }) => (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={classNames(
+                              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                              'block px-4 py-2 text-sm',
+                            )}
+                          >
+                            {t(item.title)}
+                          </a>
+                        )}
+                      </Menu.Item>
+                    ))}
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </>
+          )}
+        </Menu>
+      </span>
+    )
+
   return (
-    <Layout title={tournament?.name} description={tournament?.description} hideTitle theme={theme}>
+    <Layout title={tournament?.name} description={tournament?.description} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
         <div>Loading...</div>
       ) : (
@@ -133,7 +213,7 @@ export default function Tournament() {
           <div className="bg-white px-4 py-5 border-gray-200 sm:px-6">
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-nowrap">
               <div className="ml-4 mt-2">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">{tournament?.name}</h3>
+                <h3 className="text-lg leading-6 text-gray-600">{tournament?.description}</h3>
               </div>
               <div className="ml-2 mt-2 flex-shrink-0 sm:ml-4">
                 {user?.isAdmin && (
@@ -180,7 +260,6 @@ export default function Tournament() {
               </div>
             </div>
           </div>
-          <p className="sm:px-6 px-4 text-sm text-gray-500">{tournament?.description}</p>
           <div className="mt-5 border-t border-gray-200">
             <dl className="sm:divide-y sm:divide-gray-200">
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -297,7 +376,7 @@ export default function Tournament() {
                   )}
                 </dd>
               </div>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-indigo-500 flex space-x-2 pl-1">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faClock} className="text-indigo-400" aria-hidden="true" />
@@ -308,7 +387,7 @@ export default function Tournament() {
                   {format(new Date(tournament.date.toDate()), 'hh:mm')}
                 </dd>
               </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-indigo-500 flex space-x-2 pl-1">
                   <span className="h-5 w-4">
                     <FontAwesomeIcon icon={faCalendar} className="text-indigo-400" aria-hidden="true" />

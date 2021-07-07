@@ -14,5 +14,10 @@
     "not_started": "Не розпочатий",
     "started": "Розпочатий",
     "canceled": "Відмінений",
-    "finished": "Закінчений"
+    "finished": "Закінчений",
+    "add_to_calendar_default": "Додати в календар",
+    "add_to_calendar_google": "Додати в календар Google",
+    "add_to_calendar_outlook": "Додати в календар Outlook",
+    "add_to_calendar_office365": "Додати в календар Office365",
+    "add_to_calendar_yahoo": "Додати в календар Yahoo"
 }

@@ -14,5 +14,10 @@
     "not_started": "Not started",
     "started": "Started",
     "canceled": "Canceled",
-    "finished": "Finished"
+    "finished": "Finished",
+    "add_to_calendar_default": "Add to calendar",
+    "add_to_calendar_google": "Add to Google calendar",
+    "add_to_calendar_outlook": "Add to Outlook calendar",
+    "add_to_calendar_office365": "Add to Office365 calendar",
+    "add_to_calendar_yahoo": "Add to Yahoo calendar"
 }

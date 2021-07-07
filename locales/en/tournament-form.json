@@ -5,7 +5,7 @@
     "name": "Tournament's name",
     "description": "Tournament's description",
     "description_details": "Write a few sentences about a tournament",
-    "place": "Tournament's name",
+    "place": "Tournament's place",
     "date": "Tournament's date",
     "time": "Tournament's time",
     "participants_amount_max": "Participant's max amount",

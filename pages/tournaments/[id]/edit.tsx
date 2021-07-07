@@ -225,19 +225,6 @@ export default function EditTournament() {
                         </div>
                         <p className="mt-2 text-sm text-gray-500">{t('description_details')}</p>
                       </div>
-                      <div className="col-span-6">
-                        <label htmlFor="place" className="block text-sm font-medium text-gray-700">
-                          {t('place')}
-                        </label>
-                        <input
-                          type="text"
-                          name="place"
-                          id="place"
-                          required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                          {...register('place')}
-                        />
-                      </div>
                       <div className="col-span-6 sm:col-span-3">
                         <label htmlFor="participants_amount_max" className="block text-sm font-medium text-gray-700">
                           {t('participants_amount_max')}
@@ -300,6 +287,19 @@ export default function EditTournament() {
                           required
                           className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('date')}
+                        />
+                      </div>
+                      <div className="col-span-6">
+                        <label htmlFor="place" className="block text-sm font-medium text-gray-700">
+                          {t('place')}
+                        </label>
+                        <input
+                          type="text"
+                          name="place"
+                          id="place"
+                          required
+                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          {...register('place')}
                         />
                       </div>
                     </div>

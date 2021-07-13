@@ -29,6 +29,7 @@ import { firestore } from '../../../utils/firebase'
 import { format } from 'date-fns'
 import { statusesOptions } from './edit'
 import { createMatches } from '../../../utils/matchesCreator'
+import { CategoriesBadges } from '../../../components/common/CategoriesBadges'
 
 const MAX_PARTICIPANTS_ICON = 5
 
@@ -232,6 +233,8 @@ export default function Tournament() {
     router.push(`/tournaments/${router.query.id}/matches`)
   }, [router])
 
+  const isAllowedToEdit = useMemo(() => !!~['not_started', 'canceled'].indexOf(tournament?.status), [tournament])
+
   return (
     <Layout title={tournament?.name} description={tournament?.description} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
@@ -239,16 +242,23 @@ export default function Tournament() {
       ) : (
         <div>
           <div className="bg-white px-4 py-5 border-gray-200 sm:px-6">
+            <CategoriesBadges categories={tournament?.categories} className="mb-4" />
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-nowrap">
               <div className="ml-4 mt-2">
                 <h3 className="text-lg leading-6 text-gray-600">{tournament?.description}</h3>
               </div>
               <div className="ml-2 mt-2 flex-shrink-0 sm:ml-4">
-                {user?.isAdmin && !!~['not_started', 'canceled'].indexOf(tournament?.status) && (
+                {user?.isAdmin && (
                   <button
                     onClick={onEdit}
                     type="button"
-                    className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                    disabled={!isAllowedToEdit}
+                    className={classNames(
+                      'relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500',
+                      !isAllowedToEdit
+                        ? 'cursor-not-allowed opacity-60 bg-yellow-700 hover:bg-yellow-600 '
+                        : 'bg-yellow-600 hover:bg-yellow-700',
+                    )}
                   >
                     <span className="h-5 w-4">
                       <FontAwesomeIcon icon={faPen} />
@@ -288,7 +298,7 @@ export default function Tournament() {
               </div>
             </div>
           </div>
-          <div className="mt-5 border-t border-gray-200">
+          <div className="mt-2 border-t border-gray-200">
             <dl className="sm:divide-y sm:divide-gray-200">
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className={`text-lg font-medium text-${theme}-500 flex space-x-2 pl-1`}>

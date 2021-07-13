@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
@@ -18,13 +18,20 @@ import {
 import { firestore } from '../../utils/firebase'
 import { useUser } from '../../hooks/useUser'
 import { statusesOptions } from './[id]/edit'
+import { CategoriesBadges } from '../../components/common/CategoriesBadges'
 
 export default function Tournaments() {
   const { t } = useTranslation('tournaments')
 
   const { user } = useUser()
 
-  const [value, loading, error] = useCollectionData(firestore().collection('tournaments'), {
+  const tournamentsCollection = useMemo(() => {
+    return user?.isAdmin
+      ? firestore().collection('tournaments').orderBy('date', 'asc')
+      : firestore().collection('tournaments').where('date', '>=', new Date()).orderBy('date', 'asc')
+  }, [user])
+
+  const [value, loading, error] = useCollectionData(tournamentsCollection, {
     snapshotListenOptions: { includeMetadataChanges: true },
     idField: 'id',
   })
@@ -53,7 +60,7 @@ export default function Tournaments() {
       {loading || error ? (
         <div>Loading...</div>
       ) : (
-        <div className="rounded-lg overflow-hidden divide-y divide-gray-200 md:divide-y-0 md:grid md:grid-cols-2">
+        <div className="overflow-hidden divide-y divide-gray-200 md:divide-y-0 md:grid md:grid-cols-2">
           {value?.map((tournament) => {
             const statusTheme = statusesOptions.find((s) => s.title === tournament?.status)?.theme || LayoutTheme.GRAY
 
@@ -62,61 +69,64 @@ export default function Tournaments() {
                 key={tournament.id}
                 className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-green-500"
               >
-                <div>
-                  <h3 className="text-xl font-medium mb-2 mr-7">
-                    <Link href={`tournaments/${tournament.id}`}>
-                      <a className="focus:outline-none">
-                        <span className="absolute inset-0" aria-hidden="true" />
-                        {tournament.name}
-                      </a>
-                    </Link>
-                  </h3>
-                  <h2 className="text-gray-500 mb-2 mr-7">{tournament.description}</h2>
-                  <div className="grid grid-cols-2">
-                    <div className="flex items-baseline space-x-2">
-                      <span className="h-6 w-5">
-                        <FontAwesomeIcon icon={faInfoCircle} className={`text-${statusTheme}-500`} aria-hidden="true" />
-                      </span>
-                      <span className={`text-${statusTheme}-700 text-base font-medium`}>{t(tournament.status)}</span>
+                <Link href={`tournaments/${tournament.id}`}>
+                  <a className="focus:outline-none">
+                    <h3 className="text-xl font-medium mr-7">
+                      <span className="absolute inset-0" aria-hidden="true" />
+                      {tournament.name}
+                    </h3>
+                    <CategoriesBadges categories={tournament?.categories} />
+                    <h2 className="text-gray-500 my-1 mr-7">{tournament.description}</h2>
+                    <div className="grid grid-cols-2">
+                      <div className="flex items-baseline space-x-2 mb-1">
+                        <span className="h-6 w-5">
+                          <FontAwesomeIcon
+                            icon={faInfoCircle}
+                            className={`text-${statusTheme}-500`}
+                            aria-hidden="true"
+                          />
+                        </span>
+                        <span className={`text-${statusTheme}-700 text-base font-medium`}>{t(tournament.status)}</span>
+                      </div>
+                      <div className="flex items-baseline space-x-2 mb-1">
+                        <span className="h-6 w-5">
+                          <FontAwesomeIcon icon={faUser} className="text-green-500" aria-hidden="true" />
+                        </span>
+                        <span className="text-green-700 text-sm font-medium">
+                          {tournament.participants.length} / {tournament.participants_amount_max}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline space-x-2 mb-1">
+                        <span className="h-5 w-5">
+                          <FontAwesomeIcon icon={faClock} className="text-indigo-400" aria-hidden="true" />
+                        </span>
+                        <span className="text-indigo-600 text-sm font-medium">
+                          {format(new Date(tournament.date.toDate()), 'hh:mm')}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline space-x-2 mb-1">
+                        <span className="h-5 w-5">
+                          <FontAwesomeIcon icon={faCalendar} className="text-indigo-400" aria-hidden="true" />
+                        </span>
+                        <span className="text-indigo-600 text-sm font-medium">
+                          {format(new Date(tournament.date.toDate()), 'dd-MM-yyyy')}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline space-x-2 mb-1">
+                        <span className="h-5 w-5">
+                          <FontAwesomeIcon icon={faMoneyBill} className="text-yellow-400" aria-hidden="true" />
+                        </span>
+                        <span className="text-yellow-600 text-sm font-medium">{tournament.price}₴</span>
+                      </div>
+                      <div className="flex items-baseline space-x-2 mb-1">
+                        <span className="h-5 w-5">
+                          <FontAwesomeIcon icon={faLocationArrow} className="text-purple-400" aria-hidden="true" />
+                        </span>
+                        <span className="text-purple-600 text-sm font-medium">{tournament.place}</span>
+                      </div>
                     </div>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="h-6 w-5">
-                        <FontAwesomeIcon icon={faUser} className="text-green-500" aria-hidden="true" />
-                      </span>
-                      <span className="text-green-700 text-sm font-medium">
-                        {tournament.participants.length} / {tournament.participants_amount_max}
-                      </span>
-                    </div>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="h-5 w-5">
-                        <FontAwesomeIcon icon={faClock} className="text-indigo-400" aria-hidden="true" />
-                      </span>
-                      <span className="text-indigo-600 text-sm font-medium">
-                        {format(new Date(tournament.date.toDate()), 'hh:mm')}
-                      </span>
-                    </div>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="h-5 w-5">
-                        <FontAwesomeIcon icon={faCalendar} className="text-indigo-400" aria-hidden="true" />
-                      </span>
-                      <span className="text-indigo-600 text-sm font-medium">
-                        {format(new Date(tournament.date.toDate()), 'dd-MM-yyyy')}
-                      </span>
-                    </div>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="h-5 w-5">
-                        <FontAwesomeIcon icon={faMoneyBill} className="text-yellow-400" aria-hidden="true" />
-                      </span>
-                      <span className="text-yellow-600 text-sm font-medium">{tournament.price}₴</span>
-                    </div>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="h-5 w-5">
-                        <FontAwesomeIcon icon={faLocationArrow} className="text-purple-400" aria-hidden="true" />
-                      </span>
-                      <span className="text-purple-600 text-sm font-medium">{tournament.place}</span>
-                    </div>
-                  </div>
-                </div>
+                  </a>
+                </Link>
                 <span
                   className="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
                   aria-hidden="true"

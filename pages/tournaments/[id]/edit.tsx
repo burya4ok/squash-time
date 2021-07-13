@@ -12,6 +12,7 @@ import { firestore } from '../../../utils/firebase'
 import { faCheck, faChevronDown, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames'
+import { CATEGORIES } from '../../../components/common/CategoriesBadges'
 
 type FormData = {
   participants_amount_max: number
@@ -23,6 +24,7 @@ type FormData = {
   time: string
   status: string
   courts_amount: number
+  categories: string[]
 }
 
 export const statusesOptions = [
@@ -41,21 +43,26 @@ export default function EditTournament() {
   const [tournament, loading, error] = useTournamentInfoOnce(router.query.id)
   const { register, handleSubmit, reset, setValue } = useForm<FormData>()
 
+  const [categories, setCategories] = useState(['', '', '', ''])
+
   useEffect(() => {
     if (tournament && !loading && !error) {
       const { participants, ...data } = tournament
       const date = format(new Date(data.date.toDate()), 'yyyy-MM-dd')
       const time = format(new Date(data.date.toDate()), 'hh:mm')
 
+      setCategories(data.categories || ['', '', '', ''])
+
       reset({ ...data, date, time })
     }
   }, [tournament, loading, error])
 
-  const onSubmit = handleSubmit(({ date, time, ...values }) => {
+  const onSubmit = handleSubmit(({ date, time, categories, ...values }) => {
     firestore()
       .doc(`tournaments/${router.query.id}`)
       .update({
         ...values,
+        categories: categories.map((c) => c || ''),
         date: firestore.Timestamp.fromDate(combineDateAndTime(date, time)),
       })
       .then(() => {
@@ -104,6 +111,23 @@ export default function EditTournament() {
     [setValue],
   )
 
+  const onChangeCategories = useCallback(
+    (value: string) => {
+      const newCategories = [...categories]
+      const index = CATEGORIES.findIndex((c) => c.value === value)
+
+      if (newCategories[index]) {
+        newCategories[index] = ''
+      } else {
+        newCategories[index] = value
+      }
+
+      setCategories(newCategories)
+      setValue('categories', newCategories)
+    },
+    [categories],
+  )
+
   const theme = selectedStatus.theme
 
   const RightContent = () => {
@@ -142,34 +166,36 @@ export default function EditTournament() {
                     static
                     className="origin-top-left absolute z-10 right-0 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white divide-y divide-gray-200 ring-1 ring-black ring-opacity-5 focus:outline-none"
                   >
-                    {statusesOptions.map((option) => (
-                      <Listbox.Option
-                        key={option.title}
-                        className={({ active }) =>
-                          classNames(
-                            active ? `text-white bg-${option.theme}-500` : 'text-gray-900',
-                            'cursor-default select-none relative p-4 text-sm',
-                          )
-                        }
-                        value={option}
-                      >
-                        {({ selected, active }) => (
-                          <div className="flex flex-col">
-                            <div className="flex justify-between">
-                              <p className={selected ? 'font-semibold' : 'font-normal'}>{t(option.title)}</p>
-                              {selected ? (
-                                <span className={active ? 'text-white' : `text-${option.theme}-500`}>
-                                  <FontAwesomeIcon icon={faCheck} className="h-5 w-5" aria-hidden="true" />
-                                </span>
-                              ) : null}
+                    {statusesOptions
+                      .filter((o) => o.title !== 'started')
+                      .map((option) => (
+                        <Listbox.Option
+                          key={option.title}
+                          className={({ active }) =>
+                            classNames(
+                              active ? `text-white bg-${option.theme}-500` : 'text-gray-900',
+                              'cursor-default select-none relative p-4 text-sm',
+                            )
+                          }
+                          value={option}
+                        >
+                          {({ selected, active }) => (
+                            <div className="flex flex-col">
+                              <div className="flex justify-between">
+                                <p className={selected ? 'font-semibold' : 'font-normal'}>{t(option.title)}</p>
+                                {selected ? (
+                                  <span className={active ? 'text-white' : `text-${option.theme}-500`}>
+                                    <FontAwesomeIcon icon={faCheck} className="h-5 w-5" aria-hidden="true" />
+                                  </span>
+                                ) : null}
+                              </div>
+                              <p className={classNames(active ? `text-${option.theme}-200` : 'text-gray-500', 'mt-2')}>
+                                {t(option.description)}
+                              </p>
                             </div>
-                            <p className={classNames(active ? `text-${option.theme}-200` : 'text-gray-500', 'mt-2')}>
-                              {t(option.description)}
-                            </p>
-                          </div>
-                        )}
-                      </Listbox.Option>
-                    ))}
+                          )}
+                        </Listbox.Option>
+                      ))}
                   </Listbox.Options>
                 </Transition>
               </div>
@@ -179,6 +205,8 @@ export default function EditTournament() {
       </div>
     )
   }
+
+  console.log(categories)
 
   return (
     <Layout title={t('title_edit')} RightContent={RightContent} theme={theme}>
@@ -226,6 +254,30 @@ export default function EditTournament() {
                           />
                         </div>
                         <p className="mt-2 text-sm text-gray-500">{t('description_details')}</p>
+                      </div>
+                      <div className="col-span-6">
+                        <label htmlFor="categories" className="block text-sm font-medium text-gray-700">
+                          {t('categories')}
+                        </label>
+                        <span className="relative z-0 mt-1 inline-flex shadow-sm rounded-md" id="categories">
+                          {CATEGORIES.map((category, i) => (
+                            <button
+                              key={category.title}
+                              type="button"
+                              onClick={() => onChangeCategories(category.value)}
+                              className={classNames(
+                                `relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium  focus:z-10 focus:outline-none focus:ring-1 focus:ring-${category.theme}-500 focus:border-${category.theme}-500`,
+                                i === CATEGORIES.length - 1 && 'rounded-r-md',
+                                i === 0 && 'rounded-l-md',
+                                categories.includes(category.value)
+                                  ? `bg-${category.theme}-500 focus:bg-${category.theme}-500 hover:bg-${category.theme}-400 text-white`
+                                  : 'text-gray-700 bg-white hover:bg-gray-50',
+                              )}
+                            >
+                              {t(category.title)}
+                            </button>
+                          ))}
+                        </span>
                       </div>
                       <div className="col-span-6 sm:col-span-3">
                         <label htmlFor="participants_amount_max" className="block text-sm font-medium text-gray-700">

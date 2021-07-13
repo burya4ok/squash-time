@@ -1,7 +1,9 @@
+import classNames from 'classnames'
 import useTranslation from 'next-translate/useTranslation'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { CATEGORIES } from '../../components/common/CategoriesBadges'
 
 import { Layout, LayoutTheme } from '../../components/layout'
 import { combineDateAndTime } from '../../utils/datetime'
@@ -17,10 +19,11 @@ type FormData = {
   time: string
   status: string
   courts_amount: number
+  categories: string[]
 }
 
 export default function NewTournament() {
-  const { register, handleSubmit } = useForm<FormData>()
+  const { register, handleSubmit, getValues, setValue } = useForm<FormData>()
   const router = useRouter()
 
   const onSubmit = handleSubmit(({ date, time, ...values }) => {
@@ -41,6 +44,25 @@ export default function NewTournament() {
   })
 
   const { t } = useTranslation('tournament-form')
+
+  const [categories, setCategories] = useState(['', '', '', ''])
+
+  const onChangeCategories = useCallback(
+    (value: string) => {
+      const newCategories = [...categories]
+      const index = CATEGORIES.findIndex((c) => c.value === value)
+
+      if (newCategories[index]) {
+        newCategories[index] = ''
+      } else {
+        newCategories[index] = value
+      }
+
+      setCategories(newCategories)
+      setValue('categories', newCategories)
+    },
+    [categories],
+  )
 
   return (
     <Layout title={t('title_create')} theme={LayoutTheme.GREEN}>
@@ -85,6 +107,30 @@ export default function NewTournament() {
                         />
                       </div>
                       <p className="mt-2 text-sm text-gray-500">{t('description_details')}</p>
+                    </div>
+                    <div className="col-span-6">
+                      <label htmlFor="categories" className="block text-sm font-medium text-gray-700">
+                        {t('categories')}
+                      </label>
+                      <span className="relative z-0 mt-1 inline-flex shadow-sm rounded-md" id="categories">
+                        {CATEGORIES.map((category, i) => (
+                          <button
+                            key={category.title}
+                            type="button"
+                            onClick={() => onChangeCategories(category.value)}
+                            className={classNames(
+                              `relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-${category.theme}-500 focus:border-${category.theme}-500`,
+                              i === CATEGORIES.length - 1 && 'rounded-r-md',
+                              i === 0 && 'rounded-l-md',
+                              categories.includes(category.value)
+                                ? `bg-${category.theme}-500 focus:bg-${category.theme}-500 text-white`
+                                : 'text-gray-700',
+                            )}
+                          >
+                            {t(category.title)}
+                          </button>
+                        ))}
+                      </span>
                     </div>
                     <div className="col-span-6 sm:col-span-3">
                       <label htmlFor="participants_amount_max" className="block text-sm font-medium text-gray-700">

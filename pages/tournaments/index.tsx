@@ -310,7 +310,7 @@ export default function Tournaments() {
                               type="text"
                               name="tournament_name"
                               id="tournament_name"
-                              className="block w-full shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
+                              className="block w-full h-10 shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
                               {...register('name')}
                             />
                           </div>
@@ -331,7 +331,7 @@ export default function Tournaments() {
                                 type="text"
                                 name="tournament_place"
                                 id="tournament_place"
-                                className="block w-full shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
+                                className="block w-full h-10 shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
                                 {...register('place')}
                               />
                             </div>
@@ -353,7 +353,7 @@ export default function Tournaments() {
                                 max={tournament_end_date}
                                 name="tournament_start_date"
                                 id="tournament_start_date"
-                                className="block w-full shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
+                                className="block w-full h-10 shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
                                 {...register('start_date')}
                               />
                             </div>
@@ -375,7 +375,7 @@ export default function Tournaments() {
                                 min={tournament_start_date}
                                 name="tournament_end_date"
                                 id="tournament_end_date"
-                                className="block w-full shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
+                                className="block w-full h-10 shadow-sm sm:text-sm focus:ring-green-500 focus:border-green-500 border-gray-300 rounded-md"
                                 {...register('end_date')}
                               />
                             </div>

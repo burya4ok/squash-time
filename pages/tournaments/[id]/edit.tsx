@@ -232,7 +232,7 @@ export default function EditTournament() {
                           name="name"
                           id="name"
                           required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          className="mt-1 h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('name')}
                         />
                       </div>
@@ -245,7 +245,7 @@ export default function EditTournament() {
                             id="description"
                             name="description"
                             rows={3}
-                            className="shadow-sm focus:ring-yellow-500 focus:border-yellow-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                            className="h-10 shadow-sm focus:ring-yellow-500 focus:border-yellow-500 block w-full sm:text-sm border border-gray-300 rounded-md"
                             required
                             defaultValue={''}
                             {...register('description')}
@@ -286,7 +286,7 @@ export default function EditTournament() {
                           name="participants_amount_max"
                           id="participants_amount_max"
                           required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          className="mt-1 h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('participants_amount_max')}
                         />
                       </div>
@@ -299,7 +299,7 @@ export default function EditTournament() {
                           name="courts_amount"
                           id="courts_amount"
                           required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          className="mt-1 h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('courts_amount')}
                         />
                       </div>
@@ -312,7 +312,7 @@ export default function EditTournament() {
                           name="time"
                           id="time"
                           required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          className="mt-1 h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('time')}
                         />
                       </div>
@@ -325,7 +325,7 @@ export default function EditTournament() {
                           name="date"
                           id="date"
                           required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          className="mt-1 h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('date')}
                         />
                       </div>
@@ -341,7 +341,7 @@ export default function EditTournament() {
                             type="number"
                             name="price"
                             id="price"
-                            className="focus:ring-yellow-500 focus:border-yellow-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                            className="h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                             placeholder="0.00"
                             required
                             aria-describedby="price-currency"
@@ -363,7 +363,7 @@ export default function EditTournament() {
                           name="place"
                           id="place"
                           required
-                          className="mt-1 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          className="mt-1 h-10 focus:ring-yellow-500 focus:border-yellow-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           {...register('place')}
                         />
                       </div>

@@ -138,7 +138,7 @@ export default function Tournament() {
     [tournament],
   )
 
-  const isAllowedToParticipate = useMemo(() => tournament?.status === 'not_started', [tournament])
+  const isAllowedToParticipate = useMemo(() => !!user && tournament?.status === 'not_started', [tournament, user])
 
   const calendarEvent = useMemo(
     (): CalendarEvent => ({

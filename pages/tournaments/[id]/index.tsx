@@ -138,7 +138,7 @@ export default function Tournament() {
     [tournament],
   )
 
-  const isAllowedToParticipate = useMemo(() => !!user && tournament?.status === 'not_started', [tournament, user])
+  const isAllowedToParticipate = useMemo(() => tournament?.status === 'not_started', [tournament, user])
 
   const calendarEvent = useMemo(
     (): CalendarEvent => ({
@@ -154,7 +154,7 @@ export default function Tournament() {
   const calendarLinks = useMemo(() => getCalendarLinks(calendarEvent), [calendarEvent])
 
   const RightContent = () =>
-    !isAllowedToParticipate ? null : (
+    !user || !isAllowedToParticipate ? null : (
       <span className="inline-flex shadow-sm rounded-md">
         <a
           href={ics(calendarEvent)}

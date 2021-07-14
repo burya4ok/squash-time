@@ -206,8 +206,6 @@ export default function EditTournament() {
     )
   }
 
-  console.log(categories)
-
   return (
     <Layout title={t('title_edit')} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (

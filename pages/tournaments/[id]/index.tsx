@@ -218,12 +218,13 @@ export default function Tournament() {
   const onConfirmStarting = useCallback(() => {
     const matches = createMatches(tournament?.participants || [], tournament?.ref)
 
-    Promise.all(matches.map((match) => firestore().collection('matches').add(match)))
-      .then(() =>
-        firestore().doc(`tournaments/${router.query.id}`).update({
-          status: 'started',
-        }),
-      )
+    // Promise.all(matches.map((match) => firestore().collection('matches').add(match)))
+    //   .then(() =>
+    firestore()
+      .doc(`tournaments/${router.query.id}`)
+      .update({
+        status: 'started',
+      })
       .then(() => {
         setStartModalOpen(false)
       })
@@ -233,8 +234,8 @@ export default function Tournament() {
     router.push(`/tournaments/${router.query.id}/matches`)
   }, [router])
 
-  const isAllowedToEdit = useMemo(() => !!~['not_started', 'canceled'].indexOf(tournament?.status), [tournament])
-
+  // const isAllowedToEdit = useMemo(() => !!~['not_started', 'canceled'].indexOf(tournament?.status), [tournament])
+  const isAllowedToEdit = true
   return (
     <Layout title={tournament?.name} description={tournament?.description} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
@@ -473,7 +474,12 @@ export default function Tournament() {
                   <button
                     onClick={onGoToMatches}
                     type="button"
-                    className="inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    disabled
+                    className={classNames(
+                      'inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500',
+                      'cursor-not-allowed bg-gray-400 hover:bg-gray-400 focus:bg-gray-400',
+                      // 'bg-green-600 hover:bg-green-700'
+                    )}
                   >
                     {t('go_to_matches')}
                     <FontAwesomeIcon icon={faChevronRight} className="h-10 ml-2" />

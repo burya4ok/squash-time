@@ -93,6 +93,36 @@ export default function SignUp() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <div>
+                <button
+                  onClick={signInWithFacebook}
+                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-blue-400 text-lg font-medium text-gray-50 hover:bg-blue-300"
+                >
+                  <span className="sr-only">{t('login_facebook')}</span>
+                  <FontAwesomeIcon className="w-6 h-6" icon={faFacebookF} />
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={signInWithGoogle}
+                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-red-400 text-lg font-medium text-gray-50 hover:bg-red-300"
+                >
+                  <span className="sr-only">{t('login_google')}</span>
+                  <FontAwesomeIcon className="w-6 h-6" icon={faGoogle} />
+                </button>
+              </div>
+            </div>
+            <div className="my-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">{t('continue_with')}</span>
+                </div>
+              </div>
+            </div>
             <form className="space-y-6" onSubmit={onSubmit}>
               {error && <span className="block text-sm font-medium text-red-700">{t('login_error')}</span>}
               <div>
@@ -156,38 +186,6 @@ export default function SignUp() {
                 </button>
               </div>
             </form>
-
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">{t('continue_with')}</span>
-                </div>
-              </div>
-
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                <div>
-                  <button
-                    onClick={signInWithFacebook}
-                    className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                  >
-                    <span className="sr-only">{t('login_facebook')}</span>
-                    <FontAwesomeIcon className="w-5 h-5" icon={faFacebookF} />
-                  </button>
-                </div>
-                <div>
-                  <button
-                    onClick={signInWithGoogle}
-                    className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                  >
-                    <span className="sr-only">{t('login_google')}</span>
-                    <FontAwesomeIcon className="w-5 h-5" icon={faGoogle} />
-                  </button>
-                </div>
-              </div>
-            </div>
             <ChangeLocale />
           </div>
         </div>

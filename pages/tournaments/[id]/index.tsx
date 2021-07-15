@@ -26,12 +26,13 @@ import { useTournamentInfo } from '../../../hooks/useTournamentInfo'
 import { useUser } from '../../../hooks/useUser'
 import classNames from 'classnames'
 import { firestore } from '../../../utils/firebase'
-import { format } from 'date-fns'
+import { differenceInHours, format } from 'date-fns'
 import { statusesOptions } from './edit'
 import { createMatches } from '../../../utils/matchesCreator'
 import { CategoriesBadges } from '../../../components/common/CategoriesBadges'
 
 const MAX_PARTICIPANTS_ICON = 5
+const ONE_DAY_HOURS = 24
 
 const getCalendarLinks = (event) => [
   { title: 'add_to_calendar_google', link: google(event) },
@@ -236,6 +237,12 @@ export default function Tournament() {
 
   // const isAllowedToEdit = useMemo(() => !!~['not_started', 'canceled'].indexOf(tournament?.status), [tournament])
   const isAllowedToEdit = true
+
+  const isDisabledToLeave = useMemo(() => {
+    console.log(differenceInHours(tournament?.date.toDate(), new Date()))
+    return differenceInHours(tournament?.date.toDate(), new Date()) < ONE_DAY_HOURS
+  }, [tournament])
+
   return (
     <Layout title={tournament?.name} description={tournament?.description} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
@@ -271,8 +278,14 @@ export default function Tournament() {
                   isParticipant ? (
                     <button
                       onClick={onLeaveTournament}
+                      disabled={isDisabledToLeave}
                       type="button"
-                      className="relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      className={classNames(
+                        'relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
+                        isDisabledToLeave
+                          ? 'cursor-not-allowed opacity-60 bg-red-700 hover:bg-red-700'
+                          : 'bg-red-600 hover:bg-red-700',
+                      )}
                     >
                       <span className="h-5 w-4">
                         <FontAwesomeIcon icon={faSignOutAlt} />

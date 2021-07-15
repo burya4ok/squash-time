@@ -239,7 +239,6 @@ export default function Tournament() {
   const isAllowedToEdit = true
 
   const isDisabledToLeave = useMemo(() => {
-    console.log(differenceInHours(tournament?.date.toDate(), new Date()))
     return differenceInHours(tournament?.date.toDate(), new Date()) < ONE_DAY_HOURS
   }, [tournament])
 
@@ -250,7 +249,6 @@ export default function Tournament() {
       ) : (
         <div>
           <div className="bg-white px-4 py-5 border-gray-200 sm:px-6">
-            <CategoriesBadges categories={tournament?.categories} className="mb-4" />
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-nowrap">
               <div className="ml-4 mt-2">
                 <h3 className="text-lg leading-6 text-gray-600">{tournament?.description}</h3>
@@ -274,43 +272,9 @@ export default function Tournament() {
                     <span className="hidden md:block ml-2 text-sm h-5">{t('edit')}</span>
                   </button>
                 )}
-                {isAllowedToParticipate ? (
-                  isParticipant ? (
-                    <button
-                      onClick={onLeaveTournament}
-                      disabled={isDisabledToLeave}
-                      type="button"
-                      className={classNames(
-                        'relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
-                        isDisabledToLeave
-                          ? 'cursor-not-allowed opacity-60 bg-red-700 hover:bg-red-700'
-                          : 'bg-red-600 hover:bg-red-700',
-                      )}
-                    >
-                      <span className="h-5 w-4">
-                        <FontAwesomeIcon icon={faSignOutAlt} />
-                      </span>
-                      <span className="hidden md:block ml-2 text-sm h-5">{t('leave')}</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={onParticipate}
-                      type="button"
-                      disabled={isFull}
-                      className={classNames(
-                        'relative inline-flex items-center ml-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50',
-                        { 'cursor-not-allowed hover:bg-green-700': isFull },
-                      )}
-                    >
-                      <span className="h-5 w-4">
-                        <FontAwesomeIcon icon={faPlus} />
-                      </span>
-                      <span className="hidden md:block ml-2 text-sm h-5">{t('join')}</span>
-                    </button>
-                  )
-                ) : null}
               </div>
             </div>
+            <CategoriesBadges categories={tournament?.categories} className="mb-4" />
           </div>
           <div className="mt-2 border-t border-gray-200">
             <dl className="sm:divide-y sm:divide-gray-200">
@@ -472,12 +436,51 @@ export default function Tournament() {
                   {tournament.place}
                 </dd>
               </div>
-              <div className="flex flex-col justify-center">
+              <div className="grid grid-cols-3">
+                {isAllowedToParticipate ? (
+                  isParticipant ? (
+                    <button
+                      onClick={onLeaveTournament}
+                      disabled={isDisabledToLeave}
+                      type="button"
+                      className={classNames(
+                        'col-start-1 col-end-4 md:col-start-2 md:col-end-2 flex items-center justify-center mt-5 px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500',
+                        isDisabledToLeave
+                          ? 'cursor-not-allowed opacity-60 bg-red-700 hover:bg-red-700'
+                          : 'bg-red-600 hover:bg-red-700',
+                      )}
+                    >
+                      <div className="flex items-center">
+                        <span className="mr-2 h-5">{t('leave')}</span>
+                        <span className="h-5 w-4">
+                          <FontAwesomeIcon icon={faSignOutAlt} />
+                        </span>
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={onParticipate}
+                      type="button"
+                      disabled={isFull}
+                      className={classNames(
+                        'col-start-1 col-end-4 md:col-start-2 md:col-end-2 flex items-center justify-center mt-5 px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50',
+                        { 'cursor-not-allowed hover:bg-green-700': isFull },
+                      )}
+                    >
+                      <div className="flex items-center">
+                        <span className="mr-2 h-5">{t('join')}</span>
+                        <span className="h-5 w-4">
+                          <FontAwesomeIcon icon={faPlus} />
+                        </span>
+                      </div>
+                    </button>
+                  )
+                ) : null}
                 {tournament?.status === 'not_started' && user?.isAdmin && (
                   <button
                     onClick={onStartTournament}
                     type="button"
-                    className="inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    className="col-start-1 col-end-4 md:col-start-2 md:col-end-2 inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     {t('start_tournament')}
                   </button>
@@ -489,7 +492,7 @@ export default function Tournament() {
                     type="button"
                     disabled
                     className={classNames(
-                      'inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500',
+                      'col-start-1 col-end-4 md:col-start-2 md:col-end-2 inline-flex mt-5 items-center justify-center px-6 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500',
                       'cursor-not-allowed bg-gray-400 hover:bg-gray-400 focus:bg-gray-400',
                       // 'bg-green-600 hover:bg-green-700'
                     )}
@@ -538,10 +541,10 @@ export default function Tournament() {
                 >
                   <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
                     <div className="sm:flex sm:items-start">
-                      <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
                         <FontAwesomeIcon
                           icon={faExclamationTriangle}
-                          className="h-6 w-6 text-green-600"
+                          className="h-6 w-6 text-blue-600"
                           aria-hidden="true"
                         />
                       </div>
@@ -557,7 +560,7 @@ export default function Tournament() {
                     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                       <button
                         type="button"
-                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
                         onClick={onConfirmStarting}
                       >
                         {t('start_tournament_confirm')}

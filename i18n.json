@@ -2,7 +2,7 @@
     "locales": ["ua", "ru", "en"],
     "defaultLocale": "ua",
     "pages": {
-      "*": ["change-locale", "layout"],
+      "*": ["change-locale", "layout", "common"],
       "/": ["change-locale", "landing"],
       "/signin": ["signin"],
       "/signup": ["signup"],

@@ -5,6 +5,7 @@
     "name": "Tournament's name",
     "description": "Tournament's description",
     "description_details": "Write a few sentences about a tournament",
+    "participants": "Participants",
     "categories": "Categories",
     "categories_m1": "M1",
     "categories_m2": "M2",

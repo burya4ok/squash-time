@@ -5,6 +5,7 @@
     "name": "Назва турніру",
     "description": "Опис турніру",
     "description_details": "Напиши декілька речень про турнір",
+    "participants": "Учасники",
     "categories": "Категорії",
     "categories_m1": "M1",
     "categories_m2": "M2",

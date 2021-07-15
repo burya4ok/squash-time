@@ -9,13 +9,14 @@ import { Layout, LayoutTheme } from '../../../components/layout'
 import { useTournamentInfoOnce } from '../../../hooks/useTournamentInfo'
 import { combineDateAndTime } from '../../../utils/datetime'
 import { firestore } from '../../../utils/firebase'
-import { faCheck, faChevronDown, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faChevronDown, faExclamationTriangle, faTimes, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classNames from 'classnames'
 import { CATEGORIES } from '../../../components/common/CategoriesBadges'
 
 type FormData = {
   participants_amount_max: number
+  participants: any
   name: string
   place: string
   description: string
@@ -37,6 +38,7 @@ export const statusesOptions = [
 export default function EditTournament() {
   const router = useRouter()
 
+  const [participationsToRemove, setParticipationTsoRemove] = useState([])
   const [deletionOpen, setDeletionOpen] = useState(false)
   const cancelButtonRef = useRef(null)
 
@@ -58,13 +60,18 @@ export default function EditTournament() {
   }, [tournament, loading, error])
 
   const onSubmit = handleSubmit(({ date, time, categories, ...values }) => {
+    const updateData = {
+      ...values,
+      categories: categories.map((c) => c || ''),
+      date: firestore.Timestamp.fromDate(combineDateAndTime(date, time)),
+    }
+
+    if (participationsToRemove.length) {
+      updateData['participants'] = firestore.FieldValue.arrayRemove(...participationsToRemove)
+    }
     firestore()
       .doc(`tournaments/${router.query.id}`)
-      .update({
-        ...values,
-        categories: categories.map((c) => c || ''),
-        date: firestore.Timestamp.fromDate(combineDateAndTime(date, time)),
-      })
+      .update(updateData)
       .then(() => {
         router.push(`/tournaments/${router.query.id}`)
       })
@@ -206,6 +213,16 @@ export default function EditTournament() {
     )
   }
 
+  const onDeleteParticipant = useCallback(
+    (participantIndex) => {
+      const newPparticipationsToRemove = [...participationsToRemove]
+      newPparticipationsToRemove.push(tournament?.participants[participantIndex].ref)
+
+      setParticipationTsoRemove(newPparticipationsToRemove)
+    },
+    [tournament, participationsToRemove],
+  )
+
   return (
     <Layout title={t('title_edit')} RightContent={RightContent} theme={theme}>
       {loading || error || !tournament ? (
@@ -254,6 +271,56 @@ export default function EditTournament() {
                         <p className="mt-2 text-sm text-gray-500">{t('description_details')}</p>
                       </div>
                       <div className="col-span-6">
+                        <label htmlFor="participants" className="block text-sm font-medium text-gray-700">
+                          {t('participants')}
+                        </label>
+                        <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                          {tournament.participants
+                            .filter((p) => !participationsToRemove.find((pt) => p.ref === pt))
+                            .map((participant, personIdx) => (
+                              <li key={personIdx}>
+                                <button
+                                  type="button"
+                                  onClick={onDeleteParticipant.bind(this, personIdx)}
+                                  className="group p-2 w-full flex items-center justify-between rounded-full border border-gray-300 shadow-sm space-x-3 text-left hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                >
+                                  <span className="min-w-0 flex-1 flex items-center space-x-3">
+                                    <span className="block flex-shrink-0">
+                                      {participant?.picture ? (
+                                        <img className="h-10 w-10 rounded-full" src={participant?.picture} />
+                                      ) : (
+                                        <div
+                                          className={classNames(
+                                            'bg-gray-300 h-10 w-10 rounded-full justify-center items-center flex',
+                                          )}
+                                        >
+                                          <FontAwesomeIcon
+                                            icon={faUser}
+                                            className="block h-6 w-6 text-gray-400"
+                                            aria-hidden="true"
+                                          />
+                                        </div>
+                                      )}
+                                    </span>
+                                    <span className="block min-w-0 flex-1">
+                                      <span className="block text-sm font-medium text-gray-900 truncate">
+                                        {participant.displayName}
+                                      </span>
+                                    </span>
+                                  </span>
+                                  <span className="flex-shrink-0 h-10 w-10 inline-flex items-center justify-center">
+                                    <FontAwesomeIcon
+                                      icon={faTimes}
+                                      className="h-5 w-5 text-gray-400 group-hover:text-red-500"
+                                      aria-hidden="true"
+                                    />
+                                  </span>
+                                </button>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                      <div className="col-span-6">
                         <label htmlFor="categories" className="block text-sm font-medium text-gray-700">
                           {t('categories')}
                         </label>
@@ -277,6 +344,7 @@ export default function EditTournament() {
                           ))}
                         </span>
                       </div>
+
                       <div className="col-span-6 sm:col-span-3">
                         <label htmlFor="participants_amount_max" className="block text-sm font-medium text-gray-700">
                           {t('participants_amount_max')}
